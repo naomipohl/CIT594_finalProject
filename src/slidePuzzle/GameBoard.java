@@ -20,25 +20,27 @@ public class GameBoard implements Game{
 		return null;
 	}
 
-	@Override
+		@Override
 	public void populateBoard(Tile t) {
 		populateBoard(t, 0, 0);
 		
 	}
 	
-	Private void populateBoard(Tile root, int rowStart, int colStart){
+	private void populateBoard(Tile root, int rowStart, int colStart){
 
-		if(root instanceOf InternalTile){ //if internal node just call fcn recursively on children
-			generateIntArray(root.NW, rowStart, colStart);
-			generateIntArray(root.NE, rowStart, colStart + root.size()/2);
-			generateIntArray(root.SE, rowStart + root.size()/2, colStart + row.size()/2);
-			generateIntArray(root.SW, rowStart + root.size()/2, coStart);
+		if(root instanceof InternalTile){ //if internal node just call fcn recursively on children
+			InternalTile rootInternal = (InternalTile) root;
+			populateBoard(rootInternal.getNW(), rowStart, colStart);
+			populateBoard(rootInternal.getNE(), rowStart, colStart + rootInternal.size()/2);
+			populateBoard(rootInternal.getSE(), rowStart + rootInternal.size()/2, colStart + rootInternal.size()/2);
+			populateBoard(rootInternal.getSW(), rowStart + rootInternal.size()/2, colStart);
 		}
 		
 		else{ //if leaf node:
-			for (int i = rowStart; i < rowStart + root.size(); i++){
-				for (int j = colStart; ij< colStart + root.size(); j++){
-					ordToPrint[i][j] = root.size();
+			LeafTile rootLeaf = (LeafTile) root;
+			for (int i = rowStart; i < rowStart + rootLeaf.size(); i++){
+				for (int j = colStart; j< colStart + rootLeaf.size(); j++){
+					ordToPrint[i][j] = rootLeaf.size();
 				}
 			}
 		}
