@@ -14,3 +14,8 @@ public class InternalTile {
 		this.SW = SW;
 	}
 }
+
+/*SIZE GETTER*/
+public int size() {
+	return this.size();
+}
