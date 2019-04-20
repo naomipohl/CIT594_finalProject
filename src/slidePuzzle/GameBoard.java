@@ -12,6 +12,8 @@ public class GameBoard implements Game{
 	public GameBoard(int maxDepth, int minDepth) {
 		this.maxDepth = maxDepth;
 		this.minDepth = minDepth;
+		this.root = createTree();
+		this.ordToPrint = new int[maxDepth][maxDepth];
 	}
 
 	@Override
