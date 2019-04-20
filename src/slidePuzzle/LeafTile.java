@@ -1,12 +1,12 @@
 package slidePuzzle;
 
 public class LeafTile implements Tile {
-	private int depth;
+	private int size;
 	private int location;
 	private int parentLocation;
 	
-	public LeafTile(int depth, int location, int parentLocation) {
-		this.depth = depth;
+	public LeafTile(int size, int location, int parentLocation) {
+		this.size = size;
 		this.location = location;
 		this.parentLocation = parentLocation;
 	}
@@ -15,6 +15,11 @@ public class LeafTile implements Tile {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	/*SIZE GETTER*/
+	public int size() {
+		return this.size();
 	}
 	
 	private Tile merge() {
