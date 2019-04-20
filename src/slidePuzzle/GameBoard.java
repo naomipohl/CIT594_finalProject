@@ -22,7 +22,7 @@ public class GameBoard implements Game{
 		return null;
 	}
 
-		@Override
+	@Override
 	public void populateBoard(Tile t) {
 		populateBoard(t, 0, 0);
 		
@@ -33,18 +33,27 @@ public class GameBoard implements Game{
 		if(root instanceof InternalTile){ //if internal node just call fcn recursively on children
 			InternalTile rootInternal = (InternalTile) root;
 			populateBoard(rootInternal.getNW(), rowStart, colStart);
-			populateBoard(rootInternal.getNE(), rowStart, colStart + rootInternal.size()/2);
-			populateBoard(rootInternal.getSE(), rowStart + rootInternal.size()/2, colStart + rootInternal.size()/2);
-			populateBoard(rootInternal.getSW(), rowStart + rootInternal.size()/2, colStart);
+			populateBoard(rootInternal.getNE(), rowStart, colStart + rootInternal.getDepth()/2);
+			populateBoard(rootInternal.getSE(), rowStart + rootInternal.getDepth()/2, colStart + rootInternal.getDepth()/2);
+			populateBoard(rootInternal.getSW(), rowStart + rootInternal.getDepth()/2, colStart);
 		}
 		
 		else{ //if leaf node:
+			System.out.println("Confirmed that we are at a leaf node");
 			LeafTile rootLeaf = (LeafTile) root;
-			for (int i = rowStart; i < rowStart + rootLeaf.size(); i++){
-				for (int j = colStart; j< colStart + rootLeaf.size(); j++){
-					ordToPrint[i][j] = rootLeaf.size();
+			System.out.println("casted from tile to a leaf");
+		
+			System.out.print("rowStart is: " + rowStart + "\ncolStart is: " + colStart);
+			System.out.print("rootleaf depth is: " + rootLeaf.getDepth());
+			
+			
+			for (int i = rowStart; i < rowStart + rootLeaf.getDepth(); i++){
+				for (int j = colStart; j<colStart + rootLeaf.getDepth(); j++){
+					System.out.println("\ni = " + i + "\nj = " + j);
+					ordToPrint[i][j] = rootLeaf.getDepth();
 				}
 			}
+			
 		}
 	}
 
@@ -64,6 +73,16 @@ public class GameBoard implements Game{
 	public void printBoard(int[][] board) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	//for debugging populateBoard only:
+	public void printIntArray(int[][] board) {
+		for(int[] row: board) {
+			System.out.print("\n");
+			for(int value: row) {
+				System.out.print(value);
+			}
+		}
 	}
 
 }
