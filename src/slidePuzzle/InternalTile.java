@@ -1,12 +1,13 @@
 package slidePuzzle;
 
-public class InternalTile {
+public class InternalTile implements Tile {
 
 	private Tile NE;
 	private Tile NW;
 	private Tile SE;
 	private Tile SW;
 	private int depth;
+	private int location;
 
 	public InternalTile(Tile NE, Tile NW, Tile SE, Tile SW) {
 		this.setNE(NE);
@@ -53,6 +54,14 @@ public class InternalTile {
 
 	public void setSW(Tile sW) {
 		SW = sW;
+	}
+
+	public int getLocation() {
+		return location;
+	}
+
+	public void setLocation(int location) {
+		this.location = location;
 	}
 }
 
