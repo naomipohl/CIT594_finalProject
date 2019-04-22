@@ -3,12 +3,39 @@ package slidePuzzle;
 public class LeafTile implements Tile {
 	private int depth;
 	private int location;
-	private int parentLocation;
+	private int startRow;
+	private int startCol;
 	
-	public LeafTile(int depth, int location, int parentLocation) {
+	public LeafTile(int depth, int location, int parentStartRow, int parentStartCol) {
 		this.depth = depth;
 		this.location = location;
-		this.parentLocation = parentLocation;
+		switch(location) {
+		case 1:
+			this.startRow = parentStartRow;
+			this.startCol = parentStartCol + depth;
+			break;
+		case 2:
+			this.startRow = parentStartRow;
+			this.startCol = parentStartCol;
+			break;
+		case 3:
+			this.startRow = parentStartRow + depth;
+			this.startCol = parentStartCol;
+			break;
+		case 4:
+			this.startRow = parentStartRow + depth;
+			this.startCol = parentStartCol + depth;
+			break;
+		}
+			
+	}
+	
+	public int getStartRow() {
+		return startRow;
+	}
+	
+	public int getStartCol() {
+		return startCol;
 	}
 	
 	public int getDepth() {
@@ -17,10 +44,6 @@ public class LeafTile implements Tile {
 	
 	public int getLocation() {
 		return location;
-	}
-	
-	public int getParentLocation() {
-		return parentLocation;
 	}
 	
 	@Override
@@ -41,10 +64,10 @@ public class LeafTile implements Tile {
 	
 	InternalTile split(Tile root) {
 		// Create tile's 4 children
-		LeafTile NE = new LeafTile((this.depth / 2), 1, this.location);
-		LeafTile NW = new LeafTile((this.depth / 2), 2, this.location);
-		LeafTile SE = new LeafTile((this.depth / 2), 3, this.location);
-		LeafTile SW = new LeafTile((this.depth / 2), 4, this.location);
+		LeafTile NE = new LeafTile((this.depth / 2), 1, this.startRow, this.startCol);
+		LeafTile NW = new LeafTile((this.depth / 2), 2, this.startRow, this.startCol);
+		LeafTile SE = new LeafTile((this.depth / 2), 3, this.startRow, this.startCol);
+		LeafTile SW = new LeafTile((this.depth / 2), 4, this.startRow, this.startCol);
 		
 		// Turn current node into an internal node
 		InternalTile tile = new InternalTile(NE, NW, SE, SW);
