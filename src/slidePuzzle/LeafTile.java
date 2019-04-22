@@ -48,6 +48,8 @@ public class LeafTile implements Tile {
 		
 		// Turn current node into an internal node
 		InternalTile tile = new InternalTile(NE, NW, SE, SW);
+		tile.setDepth(this.depth);
+		tile.setLocation(this.location);
 		
 		// If we are not splitting the first time,
 		// traverse the tree until we find the parent of the node
@@ -58,21 +60,16 @@ public class LeafTile implements Tile {
 				// Set the child appropriately
 				if (this.location == 1) {
 					parent.setNE((Tile) tile);
-					System.out.println("Set NE");
 				}
 				else if (this.location == 2) {
 					parent.setNW((Tile) tile);
-					System.out.println("Set NW");
 				}
 				else if (this.location == 3) {
 					parent.setSE((Tile) tile);
-					System.out.println("Set SE");
 				}
 				else {
 					parent.setSW((Tile) tile);
-					System.out.println("Set SW");
 				}
-				
 			}
 			return parent;
 		}
@@ -91,7 +88,8 @@ public class LeafTile implements Tile {
 	 */
 	private InternalTile findParent(InternalTile current) {
 		// Check whether we have found the parent
-		if ((current.getDepth() == this.depth * 2) && (current.getLocation() == this.parentLocation)) {
+		if ((current.getDepth() == this.depth * 2) && 
+				(current.getLocation() == this.parentLocation)) {
 			return current;
 		}
 		
@@ -119,4 +117,5 @@ public class LeafTile implements Tile {
 	}
 
 }
+
 
