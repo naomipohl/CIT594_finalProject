@@ -128,7 +128,7 @@ public class LeafTile implements Tile {
 		return null;
 	}
 	
-	public void swap() {
+	public void swap(String s) {
 		// TODO Auto-generated method stub
 		return;
 	}
