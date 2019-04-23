@@ -45,24 +45,18 @@ public class LeafTile implements Tile {
 	public int getLocation() {
 		return location;
 	}
-	
-	@Override
-	public String toString() {
+		
+	public Tile merge() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	private Tile merge() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	private void rotate() {
+	public void rotate() {
 		// TODO Auto-generated method stub
 		return;
 	}
 	
-	InternalTile split(Tile root) {
+	public InternalTile split(Tile root) {
 		// Create tile's 4 children
 		LeafTile NE = new LeafTile((this.depth / 2), 1, this.startRow, this.startCol);
 		LeafTile NW = new LeafTile((this.depth / 2), 2, this.startRow, this.startCol);
@@ -134,7 +128,7 @@ public class LeafTile implements Tile {
 		return null;
 	}
 	
-	private void swap() {
+	public void swap() {
 		// TODO Auto-generated method stub
 		return;
 	}
