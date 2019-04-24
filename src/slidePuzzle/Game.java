@@ -32,10 +32,10 @@ public interface Game {
 	public Tile placeWalker();
 	
 	/**
-	 * Traverses the int[][] array
+	 * Traverses dis
 	 * and prints the game board
 	 * @param board
 	 */
-	public void printBoard(int[][] board);
+	public void printBoard();
 	
 }
