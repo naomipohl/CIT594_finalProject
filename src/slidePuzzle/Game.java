@@ -13,7 +13,7 @@ public interface Game {
 	 * based on tree traversal
 	 * @param t
 	 */
-	public void populateBoard(Tile t);
+	//public void populateBoard(Tile t);
 	
 	/**
 	 * Randomly places the dog in a
