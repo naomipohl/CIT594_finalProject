@@ -175,6 +175,8 @@ public class LeafTile implements Tile {
 	 * @return
 	 */
 	private InternalTile findParent(InternalTile current) {
+		/* //OLD IMPLEMENTATION: SEE NEW BELOW
+		
 		// Check whether we have found the parent
 		if ((current.getDepth() == this.depth * 2) && 
 				(current.getLocation() == this.parentLocation)) {
@@ -197,6 +199,45 @@ public class LeafTile implements Tile {
 		
 		// If parent wasn't found, return null
 		return null;
+		
+		*/
+		//If any of the child leaves==caller leaf, return this
+		if(current.getNE().equals(this)||current.getNW().equals(this)||
+		   current.getSE().equals(this)||current.getSW().equals(this)){
+			return current;
+			
+			
+			
+		//recursively store the search result (possibly null) findParent within each child	
+		else{
+			if(current.getNE() instanceof InternalTile{
+				InternalTile neParent = findParent(current.getNE());
+			}
+			if(current.getNW() instanceof InternalTile{
+				InternalTile nwParent = findParent(current.getNW());
+			}			
+			if(current.getSE() instanceof InternalTile{
+				InternalTile seParent = findParent(current.getSE());
+			}
+			if(current.getSW() instanceof InternalTile{
+				InternalTile swParent = findParent(current.getSW());
+			}				
+		}
+		
+			   
+		//if found a non-null matching parent: 
+		if (neParent != null) return neParent;
+		if (nwParent != null) return nwParent;
+		if (seParent != null) return seParent;
+		if (swParent != null) return swParent;	
+			   
+		//if no child and no recursive search resulted in a matching parent:
+		return null;
+		
+		
+		
+		
+		
 	}
 	
 	public void swap(String s) {
