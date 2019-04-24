@@ -46,9 +46,80 @@ public class LeafTile implements Tile {
 		return location;
 	}
 		
-	public Tile merge() {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * Merges four sibling tiles into a single leaf tile. The parent
+	 * internal tile of the four sibling tiles becomes a leaf tile of
+	 * the same depth and at same location. 
+	 * Merge will not be performed if current depth >= maxDepth. This 
+	 * error checking is done in main method. 
+	 * @return new leaf tile 
+	 */
+	public Tile merge(InternalTile root) {
+		
+		LeafTile current = this; 	//current leaf tile that action is being called on
+		InternalTile parent = this.findParent(root); 	//parent of current leaf tile
+		InternalTile grandparent = findParent(parent); 	//grandparent of current leaf tile
+		LeafTile merged; 			//new merged leaf tile
+		
+		//find start coordinates of merged leaf (i.e., coordinates of leaf from location 2)
+		int mergedStartRow = -1;
+		int mergedStartCol = -1;
+
+		if (current.getLocation() == 1) {
+			mergedStartRow = current.getStartRow();
+			mergedStartCol = current.getStartCol() - current.getDepth();
+		} 
+		else if (current.getLocation() == 2) {
+			mergedStartRow = current.getStartRow();
+			mergedStartCol = current.getStartCol();
+		} 
+		else if(current.getLocation() == 3) {
+			mergedStartRow = current.getStartRow() - current.getDepth();
+			mergedStartCol = current.getStartCol();
+		} 
+		else { //current at location 4
+			mergedStartRow = current.getStartRow() - current.getDepth();
+			mergedStartCol = current.getStartCol() - current.getDepth();
+		} 
+		
+		
+		//find start coordinates of grandparent 
+		int gpStartRow = -1;
+		int gpStartCol = -1;		
+
+		if (parent.getLocation() == 1) {
+			gpStartRow = mergedStartRow;
+			gpStartCol = mergedStartCol - parent.getDepth();
+		} 
+		else if (parent.getLocation() == 2) {
+			gpStartRow = mergedStartRow;
+			gpStartCol = mergedStartCol;
+		} 
+		else if (parent.getLocation() == 3) {
+			gpStartRow = mergedStartRow - parent.getDepth();
+			gpStartCol = mergedStartCol;
+		} 
+		else { //parent at location 4
+			gpStartRow = mergedStartRow - parent.getDepth();
+			gpStartCol = mergedStartCol - parent.getDepth();
+		}   
+		
+		//create new merged LeafTile in location and at depth of original leaf tile parent
+		merged = new LeafTile(parent.getDepth(), parent.getLocation(), gpStartRow, gpStartCol);
+		
+		
+		//create reference to new merged leaf tile from grandparent
+		if (parent.getLocation() == 1) {
+			grandparent.setNE(merged);
+		} else if (parent.getLocation() == 2) {
+			grandparent.setNW(merged);
+		} else if (parent.getLocation() == 3) {
+			grandparent.setSW(merged);
+		} else {
+			grandparent.setSE(merged);
+		}
+				
+		return merged;
 	}
 	
 	public void rotate() {
