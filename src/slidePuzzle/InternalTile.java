@@ -16,6 +16,7 @@ public class InternalTile implements Tile {
 		this.setSW(SW);
 	}
 
+	/* Getters & Setters */
 	public int getDepth() {
 		return depth;
 	}
@@ -62,6 +63,46 @@ public class InternalTile implements Tile {
 
 	public void setLocation(int location) {
 		this.location = location;
+	}
+
+	/* Interface methods */
+	@Override
+	public LeafTile merge(InternalTile grandparent) {
+		// turn current node into a leaf node
+		// find current node's parent
+		// set grandparent's child equal to the new leaf node
+		
+		return null;
+	}
+
+	@Override
+	public Tile rotate() {
+		// shift every child over by 1
+		// update leaf tile coordinates
+		// update leaf tile locations
+		
+		// returns null in leafTile class
+		return null;
+	}
+
+	@Override
+	public InternalTile split() {
+		// impossible for internal tile
+		return this;
+	}
+
+	@Override
+	public void swap(String s) {
+		// su, sr, sl, sd
+		// make sure not swapping off board
+		// if the two nodes are children of this node,
+		// swap as normal
+		// else, go to grandparent, find cousins
+	}
+
+	@Override
+	public boolean isLeaf() {
+		return false;
 	}
 }
 
