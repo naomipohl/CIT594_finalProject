@@ -18,7 +18,7 @@ public interface Tile {
 	 * error checking is done in main method. 
 	 * @return new leaf tile created by merging
 	 */
-	public LeafTile merge();
+	public LeafTile merge(InternalTile parent);
 	
 	/**
 	 * Rotates four sibling tiles 180 degrees. 
