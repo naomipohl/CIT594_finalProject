@@ -15,7 +15,64 @@ public class GameBoardTest {
 		hardCodeRoot = new LeafTile(16,2,0,0); //inputs are parent location = 0,0 and position = 2 (top left)
 	}
 	
-	
+	@Test
+	void testUpdateDisplay() {
+		GameBoard gboard = new GameBoard(16, 1);
+		gboard.populateDis();
+		LeafTile tr = new LeafTile(8, 1, 1, 0);
+		LeafTile tl = new LeafTile(8, 2, 1, 0);
+		LeafTile bl = new LeafTile(8, 3, 1, 0);
+		LeafTile br = new LeafTile(8, 4, 1, 0);
+		LeafTile tr1 = new LeafTile(4, 1, 1, 8);
+		LeafTile tr2 = new LeafTile(4, 2, 1, 8);
+		LeafTile tr3 = new LeafTile(4, 3, 1, 8);
+		LeafTile tr4 = new LeafTile(4, 4, 1, 8);
+		
+		LeafTile tr11 = new LeafTile(2, 1, 1, 12);
+		LeafTile tr12 = new LeafTile(2, 2, 1, 12);
+		gboard.walker = tr12;
+		LeafTile tr13 = new LeafTile(2, 3, 1, 12);
+		LeafTile tr14 = new LeafTile(2, 4, 1, 12);
+		
+		LeafTile tr141 = new LeafTile(1, 1, 1, 14);
+		gboard.dog = tr141;
+		LeafTile tr142 = new LeafTile(1, 2, 1, 14);
+		LeafTile tr143 = new LeafTile(1, 3, 1, 14);
+		LeafTile tr144 = new LeafTile(1, 4, 1, 14);
+		
+		
+		gboard.populateDis();
+		gboard.updateDisplay(tr);
+		gboard.updateDisplay(tl);
+		gboard.updateDisplay(bl);
+		gboard.updateDisplay(br);
+		
+		gboard.updateDisplay(tr1);
+		gboard.updateDisplay(tr2);
+		gboard.updateDisplay(tr3);
+		gboard.updateDisplay(tr4);
+		
+		gboard.updateDisplay(tr11);
+		gboard.updateDisplay(tr12);
+		gboard.updateDisplay(tr13);
+		gboard.updateDisplay(tr14);
+		
+		gboard.updateDisplay(tr141);
+		gboard.updateDisplay(tr142);
+		gboard.updateDisplay(tr143);
+		gboard.updateDisplay(tr144);
+		gboard.disToString();
+		assertEquals(gboard.dis[0][0], "___");
+		assertEquals(gboard.dis[1][7], "  |");
+		assertEquals(gboard.dis[1][8], "|  ");
+		assertEquals(gboard.dis[16][15], "__|");
+		assertEquals(gboard.dis[1][12], "|W ");
+		assertEquals(gboard.dis[1][15], "|" + "D\u0332" + "|");
+		assertEquals(gboard.dis[9][7], "  |");
+		assertEquals(gboard.dis[8][5], "___");
+		assertEquals(gboard.dis[4][4], "   ");
+		assertEquals(gboard.dis[16][0], "|__");	
+	}
 	
 
 	@Test
