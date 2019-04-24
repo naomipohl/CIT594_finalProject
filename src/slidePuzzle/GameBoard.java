@@ -7,13 +7,13 @@ public class GameBoard implements Game{
 	public int minDepth;
 	public LeafTile walker;
 	public LeafTile dog;
-	public int[][] dis;
+	public String[][] dis;
 	
 	public GameBoard(int maxDepth, int minDepth) {
 		this.maxDepth = maxDepth;
 		this.minDepth = minDepth;
 		this.root = createTree();
-		this.dis = new int[maxDepth + 1][maxDepth];
+		this.dis = new String[maxDepth + 1][maxDepth];
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class GameBoard implements Game{
 // 		}
 // 	}
 	
-	///this will actually take in a leaf Tile and get is depth and starting points from there 
+	///this will take in a leaf Tile and get is depth and starting points from there 
 	void updateDisplay(LeafTile leaf) {
 		int startRow = leaf.getStartRow();
 		int startCol = leaf.getStartCol();
@@ -111,7 +111,8 @@ public class GameBoard implements Game{
 		}
 	}
 	
-	public void disToString() {
+	@Override
+	public void printBoard() {
 		int index = 0;
 		String [] strDis = new String [maxDepth + 1]; //this is harcoded but could take in MaxDepth 
 		for(String [] rw : dis) {
@@ -140,20 +141,20 @@ public class GameBoard implements Game{
 		return null;
 	}
 
-	@Override
-	public void printBoard(int[][] board) {
-		// TODO Auto-generated method stub
+// 	@Override
+// 	public void printBoard(int[][] board) {
+// 		// TODO Auto-generated method stub
 		
-	}
+// 	}
 	
 	//for debugging populateBoard only:
-	public void printIntArray(int[][] board) {
-		for(int[] row: board) {
-			System.out.print("\n");
-			for(int value: row) {
-				System.out.print(value);
-			}
-		}
-	}
+// 	public void printIntArray(int[][] board) {
+// 		for(int[] row: board) {
+// 			System.out.print("\n");
+// 			for(int value: row) {
+// 				System.out.print(value);
+// 			}
+// 		}
+// 	}
 
 }
