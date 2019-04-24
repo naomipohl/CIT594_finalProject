@@ -197,45 +197,51 @@ public class LeafTile implements Tile {
 			findParent((InternalTile) current.getSW());
 		}
 		
+		
+		
 		// If parent wasn't found, return null
-		return null;
-		
+		//return null;
 		*/
+		
+		InternalTile neParent = null;
+		InternalTile nwParent = null;
+		InternalTile seParent = null;
+		InternalTile swParent = null;
 		//If any of the child leaves==caller leaf, return this
-		if(current.getNE().equals(this)||current.getNW().equals(this)||
-		   current.getSE().equals(this)||current.getSW().equals(this)){
-			return current;
-			
-			
-			
-		//recursively store the search result (possibly null) findParent within each child	
-		else{
-			if(current.getNE() instanceof InternalTile{
-				InternalTile neParent = findParent(current.getNE());
-			}
-			if(current.getNW() instanceof InternalTile{
-				InternalTile nwParent = findParent(current.getNW());
-			}			
-			if(current.getSE() instanceof InternalTile{
-				InternalTile seParent = findParent(current.getSE());
-			}
-			if(current.getSW() instanceof InternalTile{
-				InternalTile swParent = findParent(current.getSW());
-			}				
-		}
-		
-			   
-		//if found a non-null matching parent: 
-		if (neParent != null) return neParent;
-		if (nwParent != null) return nwParent;
-		if (seParent != null) return seParent;
-		if (swParent != null) return swParent;	
-			   
-		//if no child and no recursive search resulted in a matching parent:
-		return null;
-		
-		
-		
+				if(current.getNE().equals(this)||current.getNW().equals(this)||
+				   current.getSE().equals(this)||current.getSW().equals(this)){
+					System.out.println("getNE: " + current.getNE());
+					System.out.println("getNW: " + current.getNW());
+					System.out.println("getSE: " + current.getSE());
+					System.out.println("getSW: " + current.getSW());
+					System.out.println("this is: " + this);
+					return current;
+				}
+				//recursively store the search result (possibly null) findParent within each child	
+				else {
+					System.out.println("here");
+					if(current.getNE() instanceof InternalTile){
+						neParent = this.findParent((InternalTile)current.getNE());
+					}
+					if(current.getNW() instanceof InternalTile){
+						nwParent = this.findParent((InternalTile)current.getNW());
+					}			
+					if(current.getSE() instanceof InternalTile){
+						seParent = this.findParent((InternalTile)current.getSE());
+					}
+					if(current.getSW() instanceof InternalTile){
+						swParent = this.findParent((InternalTile)current.getSW());
+					}				
+				
+				//if found a non-null matching parent: 
+				if (neParent != null) return neParent;
+				if (nwParent != null) return nwParent;
+				if (seParent != null) return seParent;
+				if (swParent != null) return swParent;	
+					   
+				//if no child and no recursive search resulted in a matching parent:
+				return null;
+				}
 		
 		
 	}
