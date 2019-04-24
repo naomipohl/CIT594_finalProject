@@ -49,4 +49,9 @@ public interface Tile {
 	 */
 	public void swap(String s);
 
+	/**
+	 * Returns a boolean value based on data type
+	 * @return true if tile is a LeafTile and false if tile is an InternalTile
+	 */
+	public boolean isLeaf();
 }
