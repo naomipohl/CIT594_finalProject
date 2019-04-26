@@ -68,6 +68,7 @@ public class InternalTile implements Tile {
 	/* Interface methods */
 	@Override
 	public LeafTile merge(InternalTile grandparent) {
+		
 		// turn current node into a leaf node
 		// find current node's parent
 		// set grandparent's child equal to the new leaf node
