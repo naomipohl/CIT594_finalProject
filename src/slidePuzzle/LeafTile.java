@@ -45,7 +45,7 @@ public class LeafTile implements Tile {
 	public int getLocation() {
 		return location;
 	}
-		
+
 	/**
 	 * Merges four sibling tiles into a single leaf tile. The parent
 	 * internal tile of the four sibling tiles becomes a leaf tile of
@@ -53,6 +53,15 @@ public class LeafTile implements Tile {
 	 * Merge will not be performed if current depth >= maxDepth. This 
 	 * error checking is done in main method. 
 	 * @return new leaf tile 
+	 */
+	public LeafTile merge(InternalTile root) {
+		
+		InternalTile parent = this.findParent(root); 	//parent of current leaf tile
+		return parent.merge(root);
+	}
+
+	/**
+	 * OLD IMPLEMENTATION
 	 */
 	public Tile merge(InternalTile root) {
 		
