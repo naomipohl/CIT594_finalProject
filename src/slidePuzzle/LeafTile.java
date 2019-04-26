@@ -121,11 +121,19 @@ public class LeafTile implements Tile {
 				
 		return merged;
 	}
-	
-	public void rotate() {
-		// TODO Auto-generated method stub
-		return;
+
+	/**
+	 * Rotate is a method called only on internal tiles.
+	 */
+	public Tile rotate() {
+		return null;
 	}
+
+	
+	public boolean isLeaf() {
+		return true;
+	}
+
 	
 	/**
 	 * Split divides tile into four leaf tiles. If an internal tile is split, 
