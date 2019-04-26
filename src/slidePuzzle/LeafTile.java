@@ -54,9 +54,9 @@ public class LeafTile implements Tile {
 	 * error checking is done in main method. 
 	 * @return new leaf tile 
 	 */
-	public LeafTile merge(InternalTile root) {
+	public LeafTile merge(InternalTile parent) {
 		
-		InternalTile parent = this.findParent(root); 	//parent of current leaf tile
+		InternalTile parent = this.findParent(parent); 	//parent of current leaf tile
 		return parent.merge(root);
 	}
 
