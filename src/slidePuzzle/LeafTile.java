@@ -63,6 +63,7 @@ public class LeafTile implements Tile {
 	/**
 	 * OLD IMPLEMENTATION
 	 */
+	/**
 	public Tile merge(InternalTile root) {
 		
 		LeafTile current = this; 	//current leaf tile that action is being called on
@@ -130,7 +131,8 @@ public class LeafTile implements Tile {
 				
 		return merged;
 	}
-
+	*/
+	
 	/**
 	 * Rotate is a method called only on internal tiles.
 	 */
