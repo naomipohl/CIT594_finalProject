@@ -18,8 +18,77 @@ public class GameBoard implements Game{
 
 	@Override
 	public Tile createTree() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		
+		//initialize an internal tile of size 16 w/ four children size 8
+		LeafTile ne8 = new LeafTile(8,1,0,0);
+		LeafTile nw8 = new LeafTile(8,2,0,0);
+		LeafTile se8 = new LeafTile(8,3,0,0);
+		LeafTile sw8 = new LeafTile(8,4,0,0);
+		
+		
+		//System.out.println("ne8 start row is: " + ne8.getStartRow());
+		//System.out.println("ne8 start col is: " + ne8.getStartCol());
+		
+		
+		
+		
+		InternalTile internal16 = new InternalTile(ne8, nw8, se8, sw8);
+		internal16.setDepth(16);
+		
+		//LeafTile internal16 = new LeafTile(16,2,0,0);
+		
+		//uncomment this!
+		
+		Tile possibleNE = randomSplits(ne8,internal16);
+		
+		internal16.setNE(randomSplits(ne8,internal16));
+		internal16.setNW(randomSplits(nw8,internal16));
+		internal16.setSE(randomSplits(se8,internal16));
+		internal16.setSW(randomSplits(sw8,internal16));
+		
+		
+		System.out.println("Finished with random splitting");
+		return internal16;
+	}
+	
+	private Tile randomSplits(LeafTile origLeaf, Tile root) {
+		
+		
+		Tile toReturn = origLeaf;
+		
+		
+		//flip a coin to decide whether or not to split
+		Random rand = new Random();
+		int rand_binary_int = rand.nextInt()%2;
+		if (rand_binary_int == 0) {
+			System.out.println("We are returning an unsplit leaf!");
+			 toReturn = origLeaf;
+		}
+		else if (rand_binary_int == 1 && ((LeafTile) toReturn).getDepth() > 2) {
+			toReturn = ((LeafTile) toReturn).split(toReturn);
+		}
+		
+		if (toReturn instanceof InternalTile && ((InternalTile) toReturn).getDepth() > 2) {
+			System.out.println("WE ARE DOING RANDOM SPLITS YAY");
+			if(((InternalTile) toReturn).getNE() instanceof LeafTile) {
+				((InternalTile)toReturn).setNE(randomSplits(((LeafTile) ((InternalTile)toReturn).getNE()),root));
+			}
+			
+			if(((InternalTile) toReturn).getNW() instanceof LeafTile) {
+				((InternalTile)toReturn).setNW(randomSplits(((LeafTile) ((InternalTile)toReturn).getNW()),root));
+			}
+			if(((InternalTile) toReturn).getSE() instanceof LeafTile) {
+				((InternalTile)toReturn).setSE(randomSplits(((LeafTile) ((InternalTile)toReturn).getSE()),root));
+			}
+			if(((InternalTile) toReturn).getSW() instanceof LeafTile) {
+				((InternalTile)toReturn).setSW(randomSplits(((LeafTile) ((InternalTile)toReturn).getSW()),root));
+			}
+		}
+		
+		
+		//may be either the leaf passed in OR the internal resulting from split
+		return toReturn;
 	}
 
 // 	@Override
