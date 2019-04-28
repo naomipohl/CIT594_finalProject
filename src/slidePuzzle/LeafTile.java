@@ -45,6 +45,10 @@ public class LeafTile implements Tile {
 	public int getLocation() {
 		return location;
 	}
+	
+	public void setLocation(int i) {
+		this.location = i;
+	}
 
 	/**
 	 * Merges four sibling tiles into a single leaf tile. The parent
