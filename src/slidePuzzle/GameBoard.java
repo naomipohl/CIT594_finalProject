@@ -295,6 +295,16 @@ public class GameBoard implements Game{
 		return walker;
 	}
 
+	public void wipeDisplay() {
+		for(int i = 1; i < dis.length; i++) {
+			System.out.println("i is: " + i);
+			for(int j = 0; j < dis[0].length; j++) {
+				System.out.println("j is: " + j);
+				dis[i][j] = "";
+			}
+		}
+	}
+	
 // 	@Override
 // 	public void printBoard(int[][] board) {
 // 		// TODO Auto-generated method stub
