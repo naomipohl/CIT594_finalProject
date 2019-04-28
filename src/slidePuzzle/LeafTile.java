@@ -149,45 +149,43 @@ public class LeafTile implements Tile {
 	
 	/**
 	 * Split divides tile into four leaf tiles. If an internal tile is split, 
-	 * that internal tile is returned. If a leaf tile is split, the internal
-	 * tile that is parent of the new leaf tiles is returned. Split will not 
-	 * be performed if current depth <= minDepth. Error checking 
+	 * that internal tile is returned. If a leaf tile is split, the parent
+	 * of that original leaf tile is returned. It will be grandparent to the
+	 * four new leaf tiles.  
+	 * Split will not be performed if current depth <= minDepth. Error checking 
 	 * will be done in main method. 
 	 * 
-	 * @return Parent of new four leaves
+	 * @return Parent tile of original leaf tile (Grandparent of new four leaf tiles)
 	 */
 	public InternalTile split(InternalTile parent) {
 		
 		// Create tile's 4 children
 		LeafTile NE = new LeafTile((this.depth / 2), 1, this.startRow, this.startCol);
 		LeafTile NW = new LeafTile((this.depth / 2), 2, this.startRow, this.startCol);
-		LeafTile SE = new LeafTile((this.depth / 2), 3, this.startRow, this.startCol);
-		LeafTile SW = new LeafTile((this.depth / 2), 4, this.startRow, this.startCol);
+		LeafTile SW = new LeafTile((this.depth / 2), 3, this.startRow, this.startCol); 
+		LeafTile SE = new LeafTile((this.depth / 2), 4, this.startRow, this.startCol); 
 		
 		// Turn current node into an internal node
 		InternalTile tile = new InternalTile(NE, NW, SE, SW);
 		tile.setDepth(this.depth);
 		tile.setLocation(this.location);
 		
-		InternalTile parentOfLeaf = parent;
+		if (this.location == 1) {
+			parent.setNE(tile);
+		}
+		else if (this.location == 2) {
+			parent.setNW(tile);
+		}
+		else if (this.location == 3) { 
+			parent.setSW(tile);
+		}
+		else {
+			parent.setSE(tile); 
+		}
 		
-		if (parentOfLeaf != null) {
-			// Set the child appropriately
-			if (this.location == 1) {
-				parentOfLeaf.setNE(tile);
-			}
-			else if (this.location == 2) {
-				parentOfLeaf.setNW(tile);
-			}
-			else if (this.location == 3) {
-				parentOfLeaf.setSE(tile);
-			}
-			else {
-				parentOfLeaf.setSW(tile);
-			}
-		}		
-		return tile;
+		return parent;
 	}
+
 
 	
 	
