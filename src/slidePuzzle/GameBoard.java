@@ -24,7 +24,7 @@ public class GameBoard implements Game{
 		findNeighbor(((InternalTile) tile).getNE());
 		findNeighbor(((InternalTile) tile).getSW());
 		findNeighbor(((InternalTile) tile).getSE());
-		return new LeafTile(-1,-1,-1,-1);
+		return null;
 	}
 	
 	@Override
