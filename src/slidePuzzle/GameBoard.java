@@ -127,7 +127,7 @@ public class GameBoard implements Game{
 // 	}
 	
 	///this will take in a leaf Tile and get is depth and starting points from there 
-	void updateDisplay(LeafTile leaf) {
+	public void updateDisplay(LeafTile leaf) {
 		int startRow = leaf.getStartRow();
 		int startCol = leaf.getStartCol();
 		int endRow = startRow + leaf.getDepth();
