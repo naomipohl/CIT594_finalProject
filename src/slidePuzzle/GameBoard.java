@@ -20,10 +20,10 @@ public class GameBoard implements Game{
 		if(((LeafTile) tile).getStartRow() == rowToFind && ((LeafTile) tile).getStartCol() == colToFind) {
 			return (LeafTile) tile;
 		}
-		traverseTree(((InternalTile) tile).getNW());
-		traverseTree(((InternalTile) tile).getNE());
-		traverseTree(((InternalTile) tile).getSW());
-		traverseTree(((InternalTile) tile).getSE());
+		findNeighbor(((InternalTile) tile).getNW());
+		findNeighbor(((InternalTile) tile).getNE());
+		findNeighbor(((InternalTile) tile).getSW());
+		findNeighbor(((InternalTile) tile).getSE());
 		return new LeafTile(-1,-1,-1,-1);
 	}
 	
