@@ -30,13 +30,14 @@ public interface Tile {
 	/**
 	 * Split divides tile into four leaf tiles. If an internal tile is split, 
 	 * that internal tile is returned. If a leaf tile is split, the internal
-	 * tile that is parent of the new leaf tiles is returned. Split will not 
-	 * be performed if current depth <= minDepth. Error checking 
+	 * tile that is parent of the new leaf tiles is returned. The reference 
+	 * to the original leaf tile (on which split is called) must be updated. 
+	 * Split will not be performed if current depth <= minDepth. Error checking 
 	 * will be done in main method. 
 	 * 
 	 * @return Parent of new four leaves
 	 */
-	public InternalTile split();
+	public InternalTile split(InternalTile parent);
 	
 	/**
 	 * Swap exchanges the location of the tile with an adjacent tile. The two 
