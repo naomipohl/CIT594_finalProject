@@ -59,10 +59,8 @@ public class LeafTile implements Tile {
 	 * @return new leaf tile 
 	 */
 	public LeafTile merge(InternalTile parent) {
-		
-		InternalTile grandparent = this.findParent(parent); //parent = parent of current leaf tile
-		return parent.merge(grandparent);		//call merge on parent and update reference
-								//  from grandparent
+		// call merge on the parent node
+		return parent.merge(parent, grandparent);
 	}
 
 	/**
