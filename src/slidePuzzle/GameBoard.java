@@ -305,6 +305,14 @@ public class GameBoard implements Game{
 		}
 	}
 	
+	public void traverseTree(Tile tile) {
+		if(tile.isLeaf()) updateDisplay((LeafTile) tile);
+		traverseTree(((InternalTile) tile).getNW());
+		traverseTree(((InternalTile) tile).getNE());
+		traverseTree(((InternalTile) tile).getSW());
+		traverseTree(((InternalTile) tile).getSE());
+	}
+	
 // 	@Override
 // 	public void printBoard(int[][] board) {
 // 		// TODO Auto-generated method stub
