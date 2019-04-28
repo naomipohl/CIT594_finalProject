@@ -15,8 +15,7 @@ public class PlayGame {
 		Scanner sc = new Scanner(System.in);
 
 		// Print welcome message
-		System.out
-				.println("Welcome to the sliding tile game!\n" + "You are currently in the location marked with a 'W', "
+		System.out.println("Welcome to the sliding tile game!\n" + "You are currently in the location marked with a 'W', "
 						+ "and your objective is to get to the dog tile, which is "
 						+ "marked with a 'D'. You can perform the following operations: "
 						+ "Merge ('merge'), Split('split'), Swap ('su', 'sd', 'sl', or 'sr'), "
@@ -125,4 +124,5 @@ public class PlayGame {
 	}
 
 }
+
 
