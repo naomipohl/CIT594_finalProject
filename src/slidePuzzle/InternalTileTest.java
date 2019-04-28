@@ -85,7 +85,7 @@ public class InternalTileTest {
 		InternalTile grandparent = myGB.findParent(parent);
 		
 		// Merge the tiles
-		LeafTile l = parent.merge(grandparent);
+		LeafTile l = parent.merge(parent, grandparent);
 		
 		assertTrue(l.getDepth() == 2);
 		assertTrue(((LeafTile) internal4.getSE()).getDepth() == 2);
@@ -179,7 +179,80 @@ public class InternalTileTest {
 	
 	@Test
 	public void testSwap() {
-		fail("Not yet implemented");
+		//have already initialized 16x16 board without splits
+		myGB.populateBoard(hardCodeRoot);
+		
+		/*****************************************
+		 * Now let's split into four tiles of width 8:
+		 ****************************************/
+		LeafTile Leaf8_1 = new LeafTile(8,1,0,0);
+		LeafTile Leaf8_2 = new LeafTile(8,2,0,0);
+		LeafTile Leaf8_3 = new LeafTile(8,3,0,0);
+		LeafTile Leaf8_4 = new LeafTile(8,4,0,0);
+		
+		InternalTile internal16 = new InternalTile(Leaf8_1,Leaf8_2,Leaf8_3,Leaf8_4);
+		internal16.setDepth(16);
+		myGB.populateBoard(internal16);
+
+		/*****************************************
+		 * Now let's split SE corner into four tiles of width 4:
+		 ****************************************/
+		LeafTile Leaf4_1 = new LeafTile(4,1,0,0);
+		LeafTile Leaf4_2 = new LeafTile(4,2,0,0);
+		LeafTile Leaf4_3 = new LeafTile(4,3,0,0);
+		LeafTile Leaf4_4 = new LeafTile(4,4,0,0);
+		
+		InternalTile internal8 = new InternalTile(Leaf4_1,Leaf4_2,Leaf4_3,Leaf4_4);
+		internal8.setDepth(8);
+		internal16.setSE(internal8);
+		
+		myGB.populateBoard(internal16);
+		
+		/*****************************************
+		 * Now let's split NE corner of SE tile into four tiles of width 2:
+		 ****************************************/
+		LeafTile Leaf2_1 = new LeafTile(2,1,0,0);
+		LeafTile Leaf2_2 = new LeafTile(2,2,0,0);
+		LeafTile Leaf2_3 = new LeafTile(2,3,0,0);
+		LeafTile Leaf2_4 = new LeafTile(2,4,0,0);
+		
+		InternalTile internal4 = new InternalTile(Leaf2_1,Leaf2_2,Leaf2_3,Leaf2_4);
+		internal4.setDepth(4);
+		internal8.setNE(internal4);
+		
+		myGB.populateBoard(internal16);
+		
+		
+		/*****************************************
+		 * Finally, split SW corner of NE corner of bottom right tile into four tiles of width 1:
+		 ****************************************/
+		LeafTile Leaf1_1 = new LeafTile(1,1,0,0);
+		LeafTile Leaf1_2 = new LeafTile(1,2,0,0);
+		LeafTile Leaf1_3 = new LeafTile(1,3,0,0);
+		LeafTile Leaf1_4 = new LeafTile(1,4,0,0);
+		
+		InternalTile internal2 = new InternalTile(Leaf1_1,Leaf1_2,Leaf1_3,Leaf1_4);
+		internal2.setDepth(2);
+		internal4.setSW(internal2);
+		
+		myGB.populateBoard(internal16);
+		
+		/*****************************************
+		 * Swap the NW & SW size 1 tiles
+		 ****************************************/
+		// Create a copy of internalTile for testing purposes
+		InternalTile internalTest = new InternalTile(Leaf1_1,Leaf1_2,Leaf1_3,Leaf1_4);
+		
+		internal2.swap("sd", 2);
+		
+		// Check that 2 tiles were swapped
+		assertTrue(internal2.getNW().equals(internalTest.getSW()));
+		assertTrue(internal2.getSW().equals(internalTest.getNW()));
+		
+		// Check that 2 tiles were NOT swapped
+		assertTrue(internal2.getNE().equals(internalTest.getNE()));
+		assertTrue(internal2.getSE().equals(internalTest.getSE()));
+		
 	}
 	
 	@Test
@@ -195,3 +268,4 @@ public class InternalTileTest {
 	}
 	
 }
+
