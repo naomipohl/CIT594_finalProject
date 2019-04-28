@@ -15,7 +15,18 @@ public class GameBoard implements Game{
 		this.root = createTree();
 		this.dis = new String[maxDepth + 1][maxDepth];
 	}
-
+	
+	private LeafTile findNeighbor(Tile tile, int rowToFind, int colToFind) {
+		if(((LeafTile) tile).getStartRow() == rowToFind && ((LeafTile) tile).getStartCol() == colToFind) {
+			return (LeafTile) tile;
+		}
+		traverseTree(((InternalTile) tile).getNW());
+		traverseTree(((InternalTile) tile).getNE());
+		traverseTree(((InternalTile) tile).getSW());
+		traverseTree(((InternalTile) tile).getSE());
+		return new LeafTile(-1,-1,-1,-1);
+	}
+	
 	@Override
 	public Tile createTree() {
 		
