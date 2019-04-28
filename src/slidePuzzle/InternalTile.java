@@ -68,21 +68,72 @@ public class InternalTile implements Tile {
 	/* Interface methods */
 	@Override
 	public LeafTile merge(InternalTile grandparent) {
-		
 		// turn current node into a leaf node
-		// find current node's parent
-		// set grandparent's child equal to the new leaf node
+		LeafTile retTile = new LeafTile(this.depth, this.location, 0, 0);
 		
-		return null;
+		// set grandparent's child equal to the new leaf node
+		if (this.location == 1) {
+			grandparent.setNE(retTile);
+		}
+		else if (this.location == 2) {
+			grandparent.setNW(retTile);
+		}
+		else if (this.location == 2) {
+			grandparent.setSW(retTile);
+		}
+		else {
+			grandparent.setSE(retTile);
+		}
+		
+		return retTile;
 	}
 
 	@Override
 	public Tile rotate() {
-		// shift every child over by 1
-		// update leaf tile coordinates
-		// update leaf tile locations
+		// Shift every child over by 2
+		Tile NE = this.getNE();
+		Tile NW = this.getNW();
+		Tile SW = this.getSW();
+		Tile SE = this.getSE();
 		
-		// returns null in leafTile class
+		this.setNE(SW);
+		this.setNW(SE);
+		this.setSW(NE);
+		this.setSE(NW);
+		
+		// update leaf tile coordinates
+		
+		
+		// update leaf tile locations
+		if (this.getNE().isLeaf()) {
+			((LeafTile) this.getNE()).setLocation(1);
+		}
+		else {
+			((InternalTile) this.getNE()).setLocation(1);
+		}
+		
+		if (this.getNW().isLeaf()) {
+			((LeafTile) this.getNW()).setLocation(2);
+		}
+		else {
+			((InternalTile) this.getNW()).setLocation(2);
+		}
+		
+		if (this.getSW().isLeaf()) {
+			((LeafTile) this.getSW()).setLocation(3);
+		}
+		else {
+			((InternalTile) this.getSW()).setLocation(3);
+		}
+		
+		if (this.getSE().isLeaf()) {
+			((LeafTile) this.getSE()).setLocation(4);
+		}
+		else {
+			((InternalTile) this.getSE()).setLocation(4);
+		}
+		
+		// returns this tile
 		return null;
 	}
 
@@ -94,8 +145,20 @@ public class InternalTile implements Tile {
 
 	@Override
 	public void swap(String s) {
+		if (s.equals("su")) {
+			// swap up
+		}
+		else if (s.equals("sr")) {
+			// swap right
+		}
+		else if (s.equals("sl")) {
+			// swap left
+		}
+		else {
+			// swap down
+		}
 		// su, sr, sl, sd
-		// make sure not swapping off board
+		// check that tiles are of same size?
 		// if the two nodes are children of this node,
 		// swap as normal
 		// else, go to grandparent, find cousins
@@ -106,4 +169,3 @@ public class InternalTile implements Tile {
 		return false;
 	}
 }
-
