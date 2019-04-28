@@ -6,13 +6,48 @@ import org.junit.Test;
 
 public class GameBoardTest {
 	
-	static GameBoard myGB;
-	static LeafTile hardCodeRoot;
+//	static GameBoard myGB;
+//	static LeafTile hardCodeRoot;
 	
-	@Before
-	public void beforeEachTestMethod() {
-		myGB = new GameBoard(16,1);
-		hardCodeRoot = new LeafTile(16,2,0,0); //inputs are parent location = 0,0 and position = 2 (top left)
+//	@Before
+//	public void beforeEachTestMethod() {
+//		myGB = new GameBoard(16,1);
+//		hardCodeRoot = new LeafTile(16,2,0,0); //inputs are parent location = 0,0 and position = 2 (top left)
+//	}
+	
+	@Test
+	public void testFindParent() {
+		
+		GameBoard myGB2 = new GameBoard(16,1);
+		
+		Tile a = new LeafTile(2, 1, 0, 4);
+		LeafTile b = new LeafTile(2, 2, 0, 4);
+		LeafTile c = new LeafTile(2, 3, 0, 4);
+		LeafTile d = new LeafTile(2, 4, 0, 4);
+		LeafTile e = new LeafTile(2, 1, 0, 0);
+		
+		Tile NE = new InternalTile(a, b, d, c);
+		((InternalTile)NE).setDepth(4);
+		((InternalTile)NE).setLocation(1);
+		
+		LeafTile NW = new LeafTile(4, 2, 0, 0);
+		LeafTile SW = new LeafTile(4, 3, 0, 0);
+		LeafTile SE = new LeafTile(4, 4, 0, 0);
+		
+		InternalTile root = new InternalTile(NE, NW, SE, SW);
+		InternalTile fakeRoot = new InternalTile(NW, SW, NE, SE);
+		
+		assertEquals(myGB2.findParent(a, (Tile)root), NE);
+		assertEquals(myGB2.findParent(b, (Tile)root), NE);
+		assertEquals(myGB2.findParent(c, (Tile)root), NE);
+		assertEquals(myGB2.findParent(d, (Tile)root), NE);
+		
+		assertNotEquals(myGB2.findParent(SE, (Tile)root), NE);
+		assertNotEquals(myGB2.findParent(d, (Tile)root), NW);
+		assertNotEquals(myGB2.findParent(a, (Tile)root), root);
+		assertNotEquals(myGB2.findParent(a, (Tile)root), fakeRoot);
+		
+		assertNull(myGB2.findParent(e, (Tile)root));
 	}
 	
 	@Test
