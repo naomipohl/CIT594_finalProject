@@ -30,6 +30,7 @@ public class PlayGame {
 			
 			// First check whether the user has already won
 			if (g.walker.equals(g.dog)) {
+				sc.close();
 				System.out.println("You won!");
 				break;
 			}
