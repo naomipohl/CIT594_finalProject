@@ -54,6 +54,6 @@ public interface Game {
 	 * @param toFind
 	 * @return InternalTile
 	 */
-	public InternalTile findParent(Tile toFind);
+	public InternalTile findParent(Tile toFind, Tile startingTile);
 	
 }
