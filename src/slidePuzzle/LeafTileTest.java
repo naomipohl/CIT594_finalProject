@@ -18,7 +18,6 @@ public class LeafTileTest {
 	}
 
 	
-/*	THIS BLOCK OF TESTS FOR GETTERS AND SETTERS IS UNNECESSARY:
 	@Test
 	public void testGetDepth() {
 		InternalTile rootDepth2 = new InternalTile(null, null, null, null);
@@ -72,45 +71,48 @@ public class LeafTileTest {
 		LeafTile leaf = new LeafTile(1,1,14,15);
 		assertEquals(leaf.getStartCol(), 15);	
 	}
-*/
+
 		
 	@Test
 	public void testSplitLeafTile() {
 		//Splits a leaf tile into four new leaf tiles and
-		//returns the "parent" internal tile.
+		//returns the grandparent" internal tile of the four
+		//new leaf tiles.
 		//The resulting leaf tiles will each have depth equal 
 		//to one half that of their parent. 
 
-		Tile a = new LeafTile(4,1,0,4);
+		Tile a = new LeafTile(4,1,0,0);
 		Tile b = new LeafTile(4,2,0,0);
-		Tile c = new LeafTile(4,3,4,0);
-		Tile d = new LeafTile(4,4,4,4);
+		Tile c = new LeafTile(4,3,0,0);
+		Tile d = new LeafTile(4,4,0,0);
 
-		InternalTile root8 = new InternalTile(null, null, null, null);
-		root8.setNE(a);
-		root8.setNW(b);
-		root8.setSW(c);
-		root8.setSE(d);
+		InternalTile parent = new InternalTile(null, null, null, null);
+		parent.setDepth(8);
+		parent.setLocation(1);
+		parent.setNE(a);
+		parent.setNW(b);
+		parent.setSW(c);
+		parent.setSE(d);
 		
-		InternalTile splitA = a.split();
-		assertEquals(splitA.getDepth(),2);
-		assertEquals(splitA.getLocation(),1);
+		InternalTile splitA = a.split(parent);
+		assertEquals(splitA.getDepth(),8);  //depth of parent should stay the same
 		
-		Tile upperRight = splitA.getNE();
+		InternalTile aInternalTile = (InternalTile)splitA.getNE();  //this is original leaf tile that method was called on
+		LeafTile upperRight = (LeafTile) aInternalTile.getNE();	
 		assertEquals(((LeafTile) upperRight).getLocation(),1);
 		assertEquals(((LeafTile) upperRight).getDepth(), 2);
 		assertEquals(((LeafTile) upperRight).getStartRow(), 0);
 		assertEquals(((LeafTile) upperRight).getStartCol(), 6);
 		
-		Tile upperLeft = splitA.getNW();
+		Tile upperLeft = (LeafTile) aInternalTile.getNW();
 		assertEquals(((LeafTile) upperLeft).getStartRow(), 0);
 		assertEquals(((LeafTile) upperLeft).getStartCol(), 4);
 		
-		Tile lowerLeft = splitA.getSW();
+		Tile lowerLeft = (LeafTile) aInternalTile.getSW();
 		assertEquals(((LeafTile) lowerLeft).getStartRow(), 2);
 		assertEquals(((LeafTile) lowerLeft).getStartCol(), 4);
 		
-		Tile lowerRight = splitA.getSE();
+		Tile lowerRight = (LeafTile) aInternalTile.getSE();
 		assertEquals(((LeafTile) lowerRight).getStartRow(), 2);
 		assertEquals(((LeafTile) lowerRight).getStartCol(), 6);
 	}
