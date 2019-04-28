@@ -73,15 +73,27 @@ public class GameBoard implements Game{
 		Random rand = new Random();
 		int rand_binary_int = rand.nextInt()%2;
 		if (rand_binary_int == 0) {
-			System.out.println("We are returning an unsplit leaf!");
+			//System.out.println("We are returning an unsplit leaf!");
 			 toReturn = origLeaf;
 		}
 		else if (rand_binary_int == 1 && ((LeafTile) toReturn).getDepth() > 2) {
-			toReturn = ((LeafTile) toReturn).split(toReturn);
+			InternalTile parent = findParent(toReturn,root);
+			int location = ((LeafTile) toReturn).getLocation();
+			parent = toReturn.split(parent);
+			
+			if (location==1) {
+				toReturn = parent.getNE();
+			} else if (location==2) {
+				toReturn = parent.getNW();
+			} else if (location ==3) {
+				toReturn = parent.getSW();
+			} else {
+				toReturn = parent.getSE();
+			}
 		}
 		
 		if (toReturn instanceof InternalTile && ((InternalTile) toReturn).getDepth() > 2) {
-			System.out.println("WE ARE DOING RANDOM SPLITS YAY");
+			//System.out.println("WE ARE DOING RANDOM SPLITS YAY");
 			if(((InternalTile) toReturn).getNE() instanceof LeafTile) {
 				((InternalTile)toReturn).setNE(randomSplits(((LeafTile) ((InternalTile)toReturn).getNE()),root));
 			}
