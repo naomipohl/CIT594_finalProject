@@ -209,18 +209,6 @@ public class GameBoard implements Game{
 		}
 	}
 	
-	@Override
-	public Tile placeDog() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Tile placeWalker() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	
 @Override //need to update interface w/ this new signature
 	public InternalTile findParent(Tile toFind, Tile startingTile) {
@@ -269,6 +257,31 @@ public class GameBoard implements Game{
 		}
 		
 	}	
+	
+	@Override
+	public Tile placeDog(InternalTile root) {
+		ArrayList<Tile> leafTiles = new ArrayList<Tile>();
+		createLeafList(root, leafTiles);
+		dog = (LeafTile) leafTiles.get(leafTiles.size());
+		return dog;
+	}
+	
+	private void createLeafList(InternalTile tile, ArrayList<Tile> leafTiles) {
+		if(tile.isLeaf()) leafTiles.add(tile);
+		createLeafList((InternalTile) tile.getNW(), leafTiles);
+		createLeafList((InternalTile) tile.getNE(), leafTiles);
+		createLeafList((InternalTile) tile.getSW(), leafTiles);
+		createLeafList((InternalTile) tile.getSE(), leafTiles);
+		
+	}
+	
+	@Override
+	public Tile placeWalker(InternalTile root) {
+		ArrayList<Tile> leafTiles = new ArrayList<Tile>();
+		createLeafList(root, leafTiles);
+		walker = (LeafTile) leafTiles.get(0);
+		return walker;
+	}
 
 // 	@Override
 // 	public void printBoard(int[][] board) {
