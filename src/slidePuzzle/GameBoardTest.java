@@ -1,20 +1,11 @@
 package slidePuzzle;
 
 import static org.junit.Assert.*;
-import org.junit.Before;
 import org.junit.Test;
  
 public class GameBoardTest {
 	
-	static GameBoard myGB;
-	static LeafTile hardCodeRoot;
-	
-	@Before
-	public void beforeEachTestMethod() {
-		myGB = new GameBoard(16,1);
-		hardCodeRoot = new LeafTile(16,2,0,0); //inputs are parent location = 0,0 and position = 2 (top left)
-	}
-	
+
 	/*
 	 * Several methods in GameBoard.java are the result of calculations 
 	 * with random numbers. These methods have been tested with the Eclipse
@@ -64,7 +55,7 @@ public class GameBoardTest {
 	}
 	
 	@Test
-	void testUpdateDisplay() {
+	public void testUpdateDisplay() {
 		GameBoard gboard = new GameBoard(16, 1);
 		gboard.populateDis();
 		LeafTile tr = new LeafTile(8, 1, 1, 0);
