@@ -1,4 +1,6 @@
 package slidePuzzle;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class GameBoard implements Game{
 	
