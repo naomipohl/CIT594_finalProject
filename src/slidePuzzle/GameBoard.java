@@ -11,25 +11,12 @@ public class GameBoard implements Game {
 	public LeafTile walker;
 	public LeafTile dog;
 	public String[][] dis;
-	public int[][] ordToPrint;
 
 	public GameBoard(int maxDepth, int minDepth) {
 		this.maxDepth = maxDepth;
 		this.minDepth = minDepth;
 		this.root = createTree();
 		this.dis = new String[maxDepth + 1][maxDepth];
-		this.ordToPrint = new int[maxDepth + 1][maxDepth];
-	}
-
-	private LeafTile findNeighbor(Tile tile, int rowToFind, int colToFind) {
-		if (((LeafTile) tile).getStartRow() == rowToFind && ((LeafTile) tile).getStartCol() == colToFind) {
-			return (LeafTile) tile;
-		}
-		findNeighbor(((InternalTile) tile).getNW(), rowToFind, colToFind);
-		findNeighbor(((InternalTile) tile).getNE(), rowToFind, colToFind);
-		findNeighbor(((InternalTile) tile).getSW(), rowToFind, colToFind);
-		findNeighbor(((InternalTile) tile).getSE(), rowToFind, colToFind);
-		return null;
 	}
 
 	@Override
@@ -38,25 +25,17 @@ public class GameBoard implements Game {
 		// initialize an internal tile of size 16 w/ four children size 8
 		LeafTile ne8 = new LeafTile(8, 1, 0, 0);
 		LeafTile nw8 = new LeafTile(8, 2, 0, 0);
-		LeafTile se8 = new LeafTile(8, 3, 0, 0);
-		LeafTile sw8 = new LeafTile(8, 4, 0, 0);
+		LeafTile sw8 = new LeafTile(8, 3, 0, 0);
+		LeafTile se8 = new LeafTile(8, 4, 0, 0);
 
-		// System.out.println("ne8 start row is: " + ne8.getStartRow());
-		// System.out.println("ne8 start col is: " + ne8.getStartCol());
-
-		InternalTile internal16 = new InternalTile(ne8, nw8, se8, sw8);
+		InternalTile internal16 = new InternalTile(ne8, nw8, sw8, se8);
 		internal16.setDepth(16);
-
-		// LeafTile internal16 = new LeafTile(16,2,0,0);
-
-		// uncomment this!
-
-		Tile possibleNE = randomSplits(ne8, internal16);
+		internal16.setLocation(0);
 
 		internal16.setNE(randomSplits(ne8, internal16));
 		internal16.setNW(randomSplits(nw8, internal16));
-		internal16.setSE(randomSplits(se8, internal16));
 		internal16.setSW(randomSplits(sw8, internal16));
+		internal16.setSE(randomSplits(se8, internal16));
 
 		return internal16;
 	}
@@ -69,7 +48,6 @@ public class GameBoard implements Game {
 		Random rand = new Random();
 		int rand_binary_int = rand.nextInt() % 2;
 		if (rand_binary_int == 0) {
-			// System.out.println("We are returning an unsplit leaf!");
 			toReturn = origLeaf;
 		} else if (rand_binary_int == 1 && ((LeafTile) toReturn).getDepth() > 2) {
 			InternalTile parent = findParent(toReturn, root);
@@ -88,7 +66,6 @@ public class GameBoard implements Game {
 		}
 
 		if (toReturn instanceof InternalTile && ((InternalTile) toReturn).getDepth() > 2) {
-			// System.out.println("WE ARE DOING RANDOM SPLITS YAY");
 			if (((InternalTile) toReturn).getNE() instanceof LeafTile) {
 				((InternalTile) toReturn).setNE(randomSplits(((LeafTile) ((InternalTile) toReturn).getNE()), root));
 			}
@@ -191,12 +168,6 @@ public class GameBoard implements Game {
 				|| (current.getNW() != null && current.getNW().equals(toFind))
 				|| (current.getSE() != null && current.getSE().equals(toFind))
 				|| (current.getSW() != null && current.getSW().equals(toFind))) {
-			/*
-			 * System.out.println("getNE: " + current.getNE()); System.out.println("getNW: "
-			 * + current.getNW()); System.out.println("getSE: " + current.getSE());
-			 * System.out.println("getSW: " + current.getSW());
-			 * System.out.println("this is: " + this);
-			 */
 			return current;
 		}
 		// recursively store the search result (possibly null) findParent within each
@@ -208,11 +179,11 @@ public class GameBoard implements Game {
 			if (current.getNW() != null && current.getNW() instanceof InternalTile) {
 				nwParent = this.findParent(toFind, (InternalTile) current.getNW());
 			}
-			if (current.getSE() != null && current.getSE() instanceof InternalTile) {
-				seParent = this.findParent(toFind, (InternalTile) current.getSE());
-			}
 			if (current.getSW() != null && current.getSW() instanceof InternalTile) {
 				swParent = this.findParent(toFind, (InternalTile) current.getSW());
+			}
+			if (current.getSE() != null && current.getSE() instanceof InternalTile) {
+				seParent = this.findParent(toFind, (InternalTile) current.getSE());
 			}
 
 			// if found a non-null matching parent:
@@ -276,59 +247,4 @@ public class GameBoard implements Game {
 			traverseTree(((InternalTile) tile).getSE());
 		}
 	}
-
-@Override
-public void populateBoard(Tile t) {
-	populateBoard(t, 0, 0);
-	
-}
-
- private void populateBoard(Tile root, int rowStart, int colStart){
-	if(root instanceof InternalTile){ //if internal node just call fcn recursively on children
-		InternalTile rootInternal = (InternalTile) root;
-		populateBoard(rootInternal.getNW(), rowStart, colStart);
-		populateBoard(rootInternal.getNE(), rowStart, colStart + rootInternal.getDepth()/2);
-		populateBoard(rootInternal.getSE(), rowStart + rootInternal.getDepth()/2, colStart + rootInternal.getDepth()/2);
-		populateBoard(rootInternal.getSW(), rowStart + rootInternal.getDepth()/2, colStart);
-		populateBoard(rootInternal.getNE(), rowStart, colStart + rootInternal.getDepth()/2);
-		populateBoard(rootInternal.getSE(), rowStart + rootInternal.getDepth()/2, colStart + rootInternal.getDepth()/2);
-		populateBoard(rootInternal.getSW(), rowStart + rootInternal.getDepth()/2, colStart);
-	}
-
-	else{ //if leaf node:
-		//System.out.println("Confirmed that we are at a leaf node");
-		LeafTile rootLeaf = (LeafTile) root;
-		for (int i = rowStart; i < rowStart + rootLeaf.getDepth(); i++){
-			for (int j = colStart; j< colStart + rootLeaf.getDepth(); j++){
-				ordToPrint[i][j] = rootLeaf.getDepth();
-			}
-		}
-
-
-		for (int i = rowStart; i < rowStart + rootLeaf.getDepth(); i++){
-			for (int j = colStart; j<colStart + rootLeaf.getDepth(); j++){
-				//System.out.println("\ni = " + i + "\nj = " + j);
-				ordToPrint[i][j] = rootLeaf.getDepth();
-			}
-		}
-
-	}
-}
-
-	// @Override
-	// public void printBoard(int[][] board) {
-	// // TODO Auto-generated method stub
-
-	// }
-
-	 //for debugging populateBoard only:
-	 public void printIntArray(int[][] board) {
-	 for(int[] row: board) {
-	 System.out.print("\n");
-	 for(int value: row) {
-	 System.out.print(value);
-	 }
-	 }
-	 }
-
 }
