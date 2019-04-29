@@ -100,7 +100,7 @@ public class GameBoardTest {
 		gboard.updateDisplay(tr142);
 		gboard.updateDisplay(tr143);
 		gboard.updateDisplay(tr144);
-		gboard.disToString();
+		gboard.printBoard();
 		assertEquals(gboard.dis[0][0], "___");
 		assertEquals(gboard.dis[1][7], "  |");
 		assertEquals(gboard.dis[1][8], "|  ");
