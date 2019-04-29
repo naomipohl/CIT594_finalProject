@@ -124,6 +124,8 @@ public class GameBoardTest {
 		
 	}
 	
+	
+	
 	@Test 
 	public void testsPopulateDis(){
 		GameBoard gboard = new GameBoard(16, 1);
@@ -134,6 +136,51 @@ public class GameBoardTest {
 		assertEquals(dis[0][12], "___");
 		assertEquals(dis[1][1], "  ");
 	}
+	
+	@Test
+	public void testWipeDisplay() {
+		GameBoard myGB3 = new GameBoard(16,1);	
+		myGB3.populateDis();
+		
+		Tile a = new LeafTile(2, 1, 0, 4);
+		LeafTile b = new LeafTile(2, 2, 0, 4);
+		LeafTile c = new LeafTile(2, 3, 0, 4);
+		LeafTile d = new LeafTile(2, 4, 0, 4);
+		
+		
+		Tile NE = new InternalTile(a, b, d, c);
+		((InternalTile)NE).setDepth(4);
+		((InternalTile)NE).setLocation(1);
+		
+		LeafTile NW = new LeafTile(4, 2, 0, 0);
+		LeafTile SW = new LeafTile(4, 3, 0, 0);
+		LeafTile SE = new LeafTile(4, 4, 0, 0);
+		
+		InternalTile root = new InternalTile(NE, NW, SE, SW);
+		
+		myGB3.root = root;
+		myGB3.traverseTree(root); //updates the display for each leaf
+		String[][] dis = myGB3.getDis();
+		
+		
+		//verify that board is populated (without visual inspection)
+		for (int i = 1; i < 16; i++) {
+			for(int j = 0; j < 16; j++) {
+				assertFalse(dis[i][j].equals(""));
+			}
+		}
+		
+		myGB3.wipeDisplay();
+		
+		//verify that board has been wiped except for top border
+		for (int i = 1; i < 16; i++) {
+			for(int j = 0; j < 16; j++) {
+				assertEquals(dis[i][j],"");
+			}
+		}
+		
+	}
+
 
 
 
