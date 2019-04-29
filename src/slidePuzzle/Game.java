@@ -69,14 +69,6 @@ public interface Game {
 	
 	
 	/**
-	 * Populates an int[][] array based on tree traversal
-	 * @param t Tile
-	 */
-	public void populateBoard(Tile t);
-	
-
-	
-	/**
 	 * Finds the parent tile of any tile
 	 * @param toFind the tile of which to find the parent 
 	 * @return InternalTile the parent
