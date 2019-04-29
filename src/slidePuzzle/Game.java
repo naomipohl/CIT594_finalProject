@@ -1,20 +1,26 @@
 package slidePuzzle;
 
+/**
+ * Game represents a sliding tile game. The object of the game is for a 
+ * user to help a dog walker get to the dog by performing operations
+ * on the sliding tiles. This class constructs the game board, places 
+ * the dog and dog walker on the board, and prints the board to the 
+ * console. The game board is constructed from a quadtree (referred to
+ * as a tile). This class holds the root tile and uses the root to find
+ * the parent of a tile in one of its methods. 
+ * @author Hindes, Kelley, Pohl, Weiss
+ *
+ */
 public interface Game {
 	
 	/**
-	 * Creates a random tree
-	 * @return root of Quadtree
+	 * Creates a quadtree with Internal and Leaf Tiles based on values
+	 * for the maximum and minimum tile depth. The quadtree is created
+	 * with a randomized number of splits on the leaf tiles. 
+	 * @return root of quadtree
 	 */
 	public Tile createTree();
-	
-	/**
-	 * Populates an int[][] array
-	 * based on tree traversal
-	 * @param t
-	 */
-	public void populateBoard(Tile t);
-	
+
 	/**
 	 * Randomly places the dog in a
 	 * tile
@@ -32,16 +38,48 @@ public interface Game {
 	public Tile placeWalker(InternalTile root);
 	
 	/**
-	 * Traverses the tree
-	 * and prints the game board
+	 * Updates display based on depth and starting points of leaf
+	 * @param leaf
+	 */
+	public void updateDisplay(LeafTile leaf);
+	
+	/**
+	 * Helper method for console printing
+	 */
+	public void populateDis();	
+	
+	/**
+	 * Traverses the tree and prints the game board
 	 * @param board
 	 */
 	public void printBoard();
 	
+	
+	/**
+	 * Clears display on console.
+	 */
+	public void wipeDisplay();
+	
+	/**
+	 * Recursively calls updateDisplay on all children leaf tiles 
+	 * of the input param tile.
+	 * @param tile - the tile to be traversed
+	 */
+	public void traverseTree(Tile tile);
+	
+	
+	/**
+	 * Populates an int[][] array based on tree traversal
+	 * @param t Tile
+	 */
+	public void populateBoard(Tile t);
+	
+
+	
 	/**
 	 * Finds the parent tile of any tile
-	 * @param toFind
-	 * @return InternalTile
+	 * @param toFind the tile of which to find the parent 
+	 * @return InternalTile the parent
 	 */
 	public InternalTile findParent(Tile toFind, Tile startingTile);
 	
