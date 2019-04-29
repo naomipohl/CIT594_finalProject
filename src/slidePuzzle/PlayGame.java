@@ -12,7 +12,6 @@ public class PlayGame {
 		g.populateDis();
 		
 		g.populateBoard(g.root);
-		g.printIntArray(g.ordToPrint);
 		
 		// Place the dog and the walker
 		g.placeDog((InternalTile) g.root);
@@ -22,8 +21,7 @@ public class PlayGame {
 		Scanner sc = new Scanner(System.in);
 
 		// Print welcome message
-		System.out
-				.println("Welcome to the sliding tile game!\n" + "You are currently in the location marked with a 'W',\n"
+		System.out.println("Welcome to the sliding tile game!\n" + "You are currently in the location marked with a 'W',\n"
 						+ "and your objective is to get to the dog tile, which is"
 						+ "marked with a 'D'. You can perform the following operations:\n"
 						+ "Merge ('merge'), Split('split'), Swap ('su', 'sd', 'sl', or 'sr'),"
@@ -67,7 +65,6 @@ public class PlayGame {
 					g.traverseTree(g.root);
 					g.printBoard();
 					g.wipeDisplay();
-					g.printIntArray(g.ordToPrint);
 				}
 			}
 			// Rotate
@@ -84,24 +81,42 @@ public class PlayGame {
 				g.traverseTree(g.root);
 				g.printBoard();
 				g.wipeDisplay();
-				g.printIntArray(g.ordToPrint);
 			}
 			// Split
 			else if (userInput.equals("split")) {
 				// If trying to split min size tiles, throw error
-				if (g.walker.getDepth() == g.minDepth) {
+				if (g.walker.getDepth() == g.minDepth + 1) {
 					System.out.println("Tiles too small- cannot perform split");
 				} else {
 					InternalTile parent = g.findParent(g.walker, g.root);
 					// Split the current tile
 					InternalTile t = g.walker.split(parent);
+					System.out.println(t.getNE());
+					System.out.println(t.getNW());
+					System.out.println(t.getSW());
+					System.out.println(t.getSE());
 
-					g.walker = (LeafTile) t.getNW();
+					if (g.walker.getLocation() == 1) {
+						g.walker = (LeafTile) ((InternalTile) t.getNE()).getNW();
+					}
+					
+					else if (g.walker.getLocation() == 2) {
+						g.walker = (LeafTile) ((InternalTile) t.getNW()).getNW();
+					}
+					
+					else if (g.walker.getLocation() == 3) {
+						g.walker = (LeafTile) ((InternalTile) t.getSW()).getNW();
+					}
+					
+					else {
+						g.walker = (LeafTile) ((InternalTile) t.getSE()).getNW();
+					}
+					
+					
 					// Update the display
 					g.traverseTree(g.root);
 					g.printBoard();
 					g.wipeDisplay();
-					g.printIntArray(g.ordToPrint);
 				}
 			}
 			// Swap UP
@@ -116,7 +131,6 @@ public class PlayGame {
 					g.traverseTree(g.root);
 					g.printBoard();
 					g.wipeDisplay();
-					g.printIntArray(g.ordToPrint);
 				} else {
 					System.out.println("Must swap tiles of same width");
 				}
@@ -134,7 +148,6 @@ public class PlayGame {
 					g.traverseTree(g.root);
 					g.printBoard();
 					g.wipeDisplay();
-					g.printIntArray(g.ordToPrint);
 				} else {
 					System.out.println("Must swap tiles of same width");
 				}
@@ -151,7 +164,6 @@ public class PlayGame {
 					g.traverseTree(g.root);
 					g.printBoard();
 					g.wipeDisplay();
-					g.printIntArray(g.ordToPrint);
 				} else {
 					System.out.println("Must swap tiles of same width");
 				}
@@ -168,7 +180,6 @@ public class PlayGame {
 					g.traverseTree(g.root);
 					g.printBoard();
 					g.wipeDisplay();
-					g.printIntArray(g.ordToPrint);
 				} else {
 					System.out.println("Must swap tiles of same width");
 				}
