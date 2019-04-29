@@ -142,7 +142,7 @@ public class LeafTileTest {
 		root.setDepth(8);
 		root.setLocation(1);
 		
-		LeafTile actual = a.merge(SE, root);
+		LeafTile actual = a.merge(SE, root, a);
 		assertEquals(actual.getDepth(), 4);
 		assertEquals(actual.getLocation(), 4);
 		assertEquals(actual.getStartRow(), 4);
@@ -183,7 +183,7 @@ public class LeafTileTest {
 		//From Location 3: 
 		assertEquals(root.getSW().rotate(root, 3), NE);
 		
-		LeafTile mergedLoc4 = a.merge(SE, root);
+		LeafTile mergedLoc4 = a.merge(SE, root, a);
 		
 		//From Location 4:
 		assertEquals(mergedLoc4.rotate(root, 4), NW);
