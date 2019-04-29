@@ -5,11 +5,11 @@ public class LeafTile implements Tile {
 	private int location;
 	private int startRow;
 	private int startCol;
-	
+
 	public LeafTile(int depth, int location, int parentStartRow, int parentStartCol) {
 		this.depth = depth;
 		this.location = location;
-		switch(location) {
+		switch (location) {
 		case 1:
 			this.startRow = parentStartRow;
 			this.startCol = parentStartCol + depth;
@@ -27,128 +27,50 @@ public class LeafTile implements Tile {
 			this.startCol = parentStartCol + depth;
 			break;
 		}
-			
+
 	}
-	
+
 	public int getStartRow() {
 		return startRow;
 	}
-	
+
 	public int getStartCol() {
 		return startCol;
 	}
-	
+
 	public int getDepth() {
 		return depth;
 	}
-	
+
 	public int getLocation() {
 		return location;
 	}
-	
-	public void setLocation(int i) {
-		this.location = i;
-	}
 
 	/**
-	 * Merges four sibling tiles into a single leaf tile. The parent
-	 * internal tile of the four sibling tiles becomes a leaf tile of
-	 * the same depth and at same location. 
-	 * Merge will not be performed if current depth >= maxDepth. This 
-	 * error checking is done in main method. 
-	 * @return new leaf tile 
+	 * Merges four sibling tiles into a single leaf tile. The parent internal tile
+	 * of the four sibling tiles becomes a leaf tile of the same depth and at same
+	 * location. Merge will not be performed if current depth >= maxDepth. This
+	 * error checking is done in main method.
+	 * 
+	 * @return new leaf tile
 	 */
-	public LeafTile merge(InternalTile parent) {
-		// call merge on the parent node
-		return parent.merge(parent, grandparent);
+	public LeafTile merge(InternalTile parent, InternalTile grandparent) {
+
+		return parent.merge(parent, grandparent); // call merge on parent and update reference
+		// from grandparent
 	}
 
-	/**
-	 * OLD IMPLEMENTATION
-	 */
-	/**
-	public Tile merge(InternalTile root) {
-		
-		LeafTile current = this; 	//current leaf tile that action is being called on
-		InternalTile parent = this.findParent(root); 	//parent of current leaf tile
-		InternalTile grandparent = findParent(parent); 	//grandparent of current leaf tile
-		LeafTile merged; 			//new merged leaf tile
-		
-		//find start coordinates of merged leaf (i.e., coordinates of leaf from location 2)
-		int mergedStartRow = -1;
-		int mergedStartCol = -1;
-
-		if (current.getLocation() == 1) {
-			mergedStartRow = current.getStartRow();
-			mergedStartCol = current.getStartCol() - current.getDepth();
-		} 
-		else if (current.getLocation() == 2) {
-			mergedStartRow = current.getStartRow();
-			mergedStartCol = current.getStartCol();
-		} 
-		else if(current.getLocation() == 3) {
-			mergedStartRow = current.getStartRow() - current.getDepth();
-			mergedStartCol = current.getStartCol();
-		} 
-		else { //current at location 4
-			mergedStartRow = current.getStartRow() - current.getDepth();
-			mergedStartCol = current.getStartCol() - current.getDepth();
-		} 
-		
-		
-		//find start coordinates of grandparent 
-		int gpStartRow = -1;
-		int gpStartCol = -1;		
-
-		if (parent.getLocation() == 1) {
-			gpStartRow = mergedStartRow;
-			gpStartCol = mergedStartCol - parent.getDepth();
-		} 
-		else if (parent.getLocation() == 2) {
-			gpStartRow = mergedStartRow;
-			gpStartCol = mergedStartCol;
-		} 
-		else if (parent.getLocation() == 3) {
-			gpStartRow = mergedStartRow - parent.getDepth();
-			gpStartCol = mergedStartCol;
-		} 
-		else { //parent at location 4
-			gpStartRow = mergedStartRow - parent.getDepth();
-			gpStartCol = mergedStartCol - parent.getDepth();
-		}   
-		
-		//create new merged LeafTile in location and at depth of original leaf tile parent
-		merged = new LeafTile(parent.getDepth(), parent.getLocation(), gpStartRow, gpStartCol);
-		
-		
-		//create reference to new merged leaf tile from grandparent
-		if (parent.getLocation() == 1) {
-			grandparent.setNE(merged);
-		} else if (parent.getLocation() == 2) {
-			grandparent.setNW(merged);
-		} else if (parent.getLocation() == 3) {
-			grandparent.setSW(merged);
-		} else {
-			grandparent.setSE(merged);
-		}
-				
-		return merged;
-	}
-	*/
-	
 	/**
 	 * Rotate is a method called only on internal tiles.
 	 */
-	public Tile rotate() {
-		return null;
+	public Tile rotate(InternalTile parent, int location) {
+		return parent.rotate(parent, location);
 	}
 
-	
 	public boolean isLeaf() {
 		return true;
 	}
 
-	
 	/**
 	 * Split divides tile into four leaf tiles. If an internal tile is split, 
 	 * that internal tile is returned. If a leaf tile is split, the parent
@@ -188,136 +110,59 @@ public class LeafTile implements Tile {
 		return parent;
 	}
 
+	public void setLocation(int i) {
+		this.location = i;
+	}
 
-	
-	
-	//OLD IMPLEMENTATION
-	/**
-	public InternalTile split(Tile root) {
-		// Create tile's 4 children
-		LeafTile NE = new LeafTile((this.depth / 2), 1, this.startRow, this.startCol);
-		LeafTile NW = new LeafTile((this.depth / 2), 2, this.startRow, this.startCol);
-		LeafTile SE = new LeafTile((this.depth / 2), 3, this.startRow, this.startCol);
-		LeafTile SW = new LeafTile((this.depth / 2), 4, this.startRow, this.startCol);
-		
-		// Turn current node into an internal node
-		InternalTile tile = new InternalTile(NE, NW, SE, SW);
-		tile.setDepth(this.depth);
-		tile.setLocation(this.location);
-		
-		// If we are not splitting the first time,
-		// traverse the tree until we find the parent of the node
-		if (root instanceof InternalTile) {
-			InternalTile parent = this.findParent((InternalTile) root);
-			
-			if (parent != null) {
-				// Set the child appropriately
-				if (this.location == 1) {
-					parent.setNE((Tile) tile);
-				}
-				else if (this.location == 2) {
-					parent.setNW((Tile) tile);
-				}
-				else if (this.location == 3) {
-					parent.setSE((Tile) tile);
-				}
-				else {
-					parent.setSW((Tile) tile);
-				}
+	@Override
+	public LeafTile swap(String s, Tile root) {
+		if (s.equals("su")) {
+			Tile l = findNeighbor(root, this.getStartRow() - this.getDepth(), this.getStartCol());
+			return (LeafTile) l;
+		} else if (s.equals("sd")) {
+			Tile l = findNeighbor(root, this.getStartRow() + this.getDepth(), this.getStartCol());
+			return (LeafTile) l;
+		} else if (s.equals("sr")) {
+			Tile l = findNeighbor(root, this.getStartRow(), this.getStartCol() + this.getDepth());
+			System.out.println("LEAF IS: " + l);
+			return (LeafTile) l;
+		} else {
+			Tile l = findNeighbor(root, this.getStartRow(), this.getStartCol() - this.getDepth());
+			return (LeafTile) l;
+		}
+	}
+
+	private Tile findNeighbor(Tile tile, int rowToFind, int colToFind) {
+		Tile nw = null;
+		Tile ne = null;
+		Tile sw = null;
+		Tile se = null;
+
+		if (tile.isLeaf()) {
+			if (((LeafTile) tile).getStartRow() == rowToFind && ((LeafTile) tile).getStartCol() == colToFind) {
+				System.out.println("depth is: ");
+				System.out.println(((LeafTile) tile).getDepth());
+				System.out.println("returning tile: " + tile);
+				return tile;
 			}
-			return parent;
+		} else {
+			nw = findNeighbor(((InternalTile) tile).getNW(), rowToFind, colToFind);
+			ne = findNeighbor(((InternalTile) tile).getNE(), rowToFind, colToFind);
+			sw = findNeighbor(((InternalTile) tile).getSW(), rowToFind, colToFind);
+			se = findNeighbor(((InternalTile) tile).getSE(), rowToFind, colToFind);
 		}
-		
-		// If we are splitting the first time
-		else {
-			return tile;
-		}
-		
-	}
-	*/
-	
-	/**
-	 * Helper method to traverse tree and find parent node
-	 * @param current
-	 * @return
-	 */
-	private InternalTile findParent(InternalTile current) {
-		/* //OLD IMPLEMENTATION: SEE NEW BELOW
-		
-		// Check whether we have found the parent
-		if ((current.getDepth() == this.depth * 2) && 
-				(current.getLocation() == this.parentLocation)) {
-			return current;
-		}
-		
-		// Recursively search the tree
-		if (current.getNE() instanceof InternalTile) {
-			findParent((InternalTile) current.getNE());
-		}
-		if (current.getNW() instanceof InternalTile) {
-			findParent((InternalTile) current.getNW());
-		}
-		if (current.getSE() instanceof InternalTile) {
-			findParent((InternalTile) current.getSE());
-		}
-		if (current.getSW() instanceof InternalTile) {
-			findParent((InternalTile) current.getSW());
-		}
-		
-		
-		
-		// If parent wasn't found, return null
-		//return null;
-		*/
-		
-		InternalTile neParent = null;
-		InternalTile nwParent = null;
-		InternalTile seParent = null;
-		InternalTile swParent = null;
-		//If any of the child leaves==caller leaf, return this
-				if(current.getNE().equals(this)||current.getNW().equals(this)||
-				   current.getSE().equals(this)||current.getSW().equals(this)){
-					System.out.println("getNE: " + current.getNE());
-					System.out.println("getNW: " + current.getNW());
-					System.out.println("getSE: " + current.getSE());
-					System.out.println("getSW: " + current.getSW());
-					System.out.println("this is: " + this);
-					return current;
-				}
-				//recursively store the search result (possibly null) findParent within each child	
-				else {
-					System.out.println("here");
-					if(current.getNE() instanceof InternalTile){
-						neParent = this.findParent((InternalTile)current.getNE());
-					}
-					if(current.getNW() instanceof InternalTile){
-						nwParent = this.findParent((InternalTile)current.getNW());
-					}			
-					if(current.getSE() instanceof InternalTile){
-						seParent = this.findParent((InternalTile)current.getSE());
-					}
-					if(current.getSW() instanceof InternalTile){
-						swParent = this.findParent((InternalTile)current.getSW());
-					}				
-				
-				//if found a non-null matching parent: 
-				if (neParent != null) return neParent;
-				if (nwParent != null) return nwParent;
-				if (seParent != null) return seParent;
-				if (swParent != null) return swParent;	
-					   
-				//if no child and no recursive search resulted in a matching parent:
-				return null;
-				}
-		
-		
-	}
-	
-	public void swap(String s) {
-		// TODO Auto-generated method stub
-		return;
+
+		if (nw != null)
+			return nw;
+		if (ne != null)
+			return ne;
+		if (sw != null)
+			return sw;
+		if (se != null)
+			return se;
+		return null;
+
 	}
 
 }
-
 
