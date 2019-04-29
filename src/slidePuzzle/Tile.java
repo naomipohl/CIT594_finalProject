@@ -15,7 +15,7 @@ public interface Tile {
 	 * internal tile of the four sibling tiles becomes a leaf tile and that
 	 * leaf tile is returned. 
 	 * Merge will not be performed if current depth >= maxDepth. This 
-	 * error checking is done in main method. 
+	 * error checking is done in main method.
 	 * @return new leaf tile created by merging
 	 */
 	public LeafTile merge(InternalTile parent, InternalTile grandparent);
@@ -25,14 +25,13 @@ public interface Tile {
 	 * Test for rotate will verify tile's location/coordinates.
 	 * @return the tile on which rotate is called in new rotated position
 	 */
-	public Tile rotate();
+	public Tile rotate(InternalTile parent, int location);
 
 	/**
 	 * Split divides tile into four leaf tiles. If an internal tile is split, 
 	 * that internal tile is returned. If a leaf tile is split, the internal
-	 * tile that is parent of the new leaf tiles is returned. The reference 
-	 * to the original leaf tile (on which split is called) must be updated. 
-	 * Split will not be performed if current depth <= minDepth. Error checking 
+	 * tile that is parent of the new leaf tiles is returned. Split will not 
+	 * be performed if current depth <= minDepth. Error checking 
 	 * will be done in main method. 
 	 * 
 	 * @return Parent of new four leaves
@@ -48,11 +47,12 @@ public interface Tile {
 	 * "sl" moves the tile to the left. "su" moves the tile up. "sd" moves the 
 	 * tile down.
 	 */
-	public void swap(String s);
+	public LeafTile swap(String s, Tile root);
 
 	/**
 	 * Returns a boolean value based on data type
 	 * @return true if tile is a LeafTile and false if tile is an InternalTile
 	 */
 	public boolean isLeaf();
+	
 }
