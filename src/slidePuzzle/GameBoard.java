@@ -205,7 +205,6 @@ public class GameBoard implements Game{
 		}
 	}
 	
-	@Override
 	public void printBoard() {
 		int index = 0;
 		String [] strDis = new String [maxDepth + 1]; //this is harcoded but could take in MaxDepth 
@@ -272,7 +271,6 @@ public class GameBoard implements Game{
 		
 	}	
 	
-	@Override
 	public Tile placeDog(InternalTile root) {
 		ArrayList<Tile> leafTiles = new ArrayList<Tile>();
 		createLeafList(root, leafTiles);
@@ -289,7 +287,6 @@ public class GameBoard implements Game{
 		
 	}
 	
-	@Override
 	public Tile placeWalker(InternalTile root) {
 		ArrayList<Tile> leafTiles = new ArrayList<Tile>();
 		createLeafList(root, leafTiles);
