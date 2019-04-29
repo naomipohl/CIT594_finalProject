@@ -122,7 +122,16 @@ public class GameBoardTest {
 		assertEquals(gboard.dis[16][0], "|__");	
 	}
 	
+	@Test 
+	public void testsPopulateDis(){
+		GameBoard gboard = new GameBoard(16, 1);
+		gboard.populateDis();
 
+		String[][] dis = gboard.getDis();
+		
+		assertEquals(dis[0][12], "___");
+		assertEquals(dis[1][1], "  ");
+	}
 
 
 
