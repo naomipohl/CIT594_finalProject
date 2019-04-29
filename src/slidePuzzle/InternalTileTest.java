@@ -1,139 +1,160 @@
 package slidePuzzle;
 
-import static org.junit.Assert.*;
+public class InternalTile implements Tile {
 
-import org.junit.Before;
-import org.junit.Test;
+	private Tile NE;
+	private Tile NW;
+	private Tile SW;
+	private Tile SE;
+	private int depth;
+	private int location;
 
-public class InternalTileTest {
+	public InternalTile(Tile NE, Tile NW, Tile SW, Tile SE) {
+		this.setNE(NE);
+		this.setNW(NW);
+		this.setSW(SW);
+		this.setSE(SE);
+	}
 
-	@Test
-	public void testMerge() {
-		//Creates a new leaf node from 4 sibling leaf tiles
-		//test that depth, location, startRow and startCol are correct for new leaf node
-		LeafTile NE = new LeafTile(4, 1, 0, 0);
-		LeafTile NW = new LeafTile(4, 2, 0, 0);
-		LeafTile SW = new LeafTile(4, 3, 0, 0);
+	/* Getters & Setters */
+	public int getDepth() {
+		return depth;
+	}
+
+	public void setDepth(int depth) {
+		this.depth = depth;
+	}
+
+	public Tile getSE() {
+		return SE;
+	}
+
+	public void setSE(Tile sE) {
+		SE = sE;
+	}
+
+	public Tile getNE() {
+		return NE;
+	}
+
+	public void setNE(Tile nE) {
+		NE = nE;
+	}
+
+	public Tile getNW() {
+		return NW;
+	}
+
+	public void setNW(Tile nW) {
+		NW = nW;
+	}
+
+	public Tile getSW() {
+		return SW;
+	}
+
+	public void setSW(Tile sW) {
+		SW = sW;
+	}
+
+	public int getLocation() {
+		return location;
+	}
+
+	public void setLocation(int location) {
+		this.location = location;
+	}
+
+	/* Interface methods */
+	@Override
+	public LeafTile merge(InternalTile parent, InternalTile grandparent, LeafTile l) {
+		int parentSR = 0;
+		int parentSC = 0;
+		if (l.getLocation() == 1) {
+			parentSR = l.getStartRow();
+			parentSC = l.getStartCol() - l.getDepth();
+		}
+		else if (l.getLocation() == 2) {
+			parentSR = l.getStartRow();
+			parentSC = l.getStartCol();
+		}
+		else if (l.getLocation() == 3) {
+			parentSR = l.getStartRow() - l.getDepth();
+			parentSC = l.getStartCol();
+		}
+		else {
+			parentSR = l.getStartRow() - l.getDepth();
+			parentSC = l.getStartCol() - l.getDepth();
+		}
 		
-		LeafTile a = new LeafTile(2,1,4,4);
-		LeafTile b = new LeafTile(2,2,4,4);
-		LeafTile c = new LeafTile(2,3,4,4);
-		LeafTile d = new LeafTile(2,4,4,4);
-		InternalTile SE = new InternalTile(a, b, c, d);
-		SE.setLocation(4);
-		SE.setDepth(4);
-				
-		InternalTile root = new InternalTile(NE, NW, SW, SE);
-		root.setDepth(8);
-		root.setLocation(1);
+		int startRow = 0;
+		int startCol = 0;
+		if (parent.getLocation() == 1) {
+			startRow = parentSR;
+			startCol = parentSC - parent.getDepth();
+		}
+		else if (parent.getLocation() == 2) {
+			startRow = parentSR;
+			startCol = parentSC;
+		}
+		else if (parent.getLocation() == 3) {
+			startRow = parentSR - parent.getDepth();
+			startCol = parentSC;
+		}
+		else {
+			startRow = parentSR - parent.getDepth();
+			startCol = parentSC - parent.getDepth();
+		}
 		
-		LeafTile actual = SE.merge(SE, root, a);
-		assertEquals(actual.getDepth(), 4);
-		assertEquals(actual.getLocation(), 4);
-		assertEquals(actual.getStartRow(), 4);
-		assertEquals(actual.getStartCol(), 4);
-		assertEquals(root.getSE(), actual);
+		// Turn current node into a leaf node
+		LeafTile retTile = new LeafTile(this.depth, this.location, startRow, startCol);
+
+		// Set grandparent's child equal to the new leaf node
+		if (this.location == 1) {
+			grandparent.setNE(retTile);
+		} else if (this.location == 2) {
+			grandparent.setNW(retTile);
+		} else if (this.location == 3) {
+			grandparent.setSW(retTile);
+		} else if (this.location == 4) {
+			grandparent.setSE(retTile);
+		}
+
+		return retTile;
+	}
+
+	@Override
+	public Tile rotate(InternalTile parent, int location) {
 		
-		LeafTile actual2 = SW.merge(root, root, SW);
-		assertEquals(actual2.getDepth(), 8);
-		assertEquals(actual2.getLocation(), 1);
-		assertEquals(actual2.getStartRow(), 0);
-		assertEquals(actual2.getStartCol(), 0);
-		
-		
+		if (location == 1) {
+			return this.getSW();
+		}
+		else if (location == 2) {
+			return this.getSE();
+		}
+		else if (location == 3) {
+			return this.getNE();
+		}
+		else {
+			return this.getNW();
+		}
 		
 	}
-	
-	@Test
-	public void testRotate() {
-		//takes four sibling leaf tile and rotates position clockwise 180 degrees
 
-		LeafTile NE = new LeafTile(4, 1, 0, 0);
-		LeafTile NW = new LeafTile(4, 2, 0, 0);
-		LeafTile SW = new LeafTile(4, 3, 0, 0);
-		
-		LeafTile a = new LeafTile(2,1,4,4);
-		LeafTile b = new LeafTile(2,2,4,4);
-		LeafTile c = new LeafTile(2,3,4,4);
-		LeafTile d = new LeafTile(2,4,4,4);
-		InternalTile SE = new InternalTile(a, b, c, d);
-		SE.setLocation(4);
-		SE.setDepth(4);
-				
-		InternalTile root = new InternalTile(NE, NW, SW, SE);
-		root.setDepth(8);
-		root.setLocation(1);
+	@Override
+	public InternalTile split(InternalTile i) {
+		// Impossible for internal tile
+		return this;
+	}
 
-		//From Location 1:
-		assertEquals(SE.getNE().rotate(SE, 1), SE.getSW());
-		
-		//From Location 2:
-		assertEquals(SE.getNW().rotate(SE, 2), SE.getSE());
-		
-		//From Location 3: 
-		assertEquals(SE.getSW().rotate(SE, 3), SE.getNE());
-		
-		LeafTile mergedLoc4 = a.merge(SE, root, a);
-		
-		//From Location 4:
-		assertEquals(mergedLoc4.rotate(root, 4), NW);
+	@Override
+	public LeafTile swap(String s, Tile root) {
+		return null;
 	}
-	
-	@Test
-	public void testSplit() {
-		LeafTile NE = new LeafTile(4, 1, 0, 0);
-		LeafTile NW = new LeafTile(4, 2, 0, 0);
-		LeafTile SW = new LeafTile(4, 3, 0, 0);
-		
-		LeafTile a = new LeafTile(2,1,4,4);
-		LeafTile b = new LeafTile(2,2,4,4);
-		LeafTile c = new LeafTile(2,3,4,4);
-		LeafTile d = new LeafTile(2,4,4,4);
-		InternalTile SE = new InternalTile(a, b, d, c);
-		SE.setLocation(4);
-		SE.setDepth(4);
-				
-		InternalTile root = new InternalTile(NE, NW, SE, SW);
-		root.setDepth(8);
-		root.setLocation(1);
-		
-		InternalTile t = SE.split(root);
 
-		assertTrue(t.equals(SE));
+	@Override
+	public boolean isLeaf() {
+		// Always returns false
+		return false;
 	}
-	
-	@Test
-	public void testSwap() {
-		LeafTile NE = new LeafTile(4, 1, 0, 0);
-		LeafTile NW = new LeafTile(4, 2, 0, 0);
-		LeafTile SW = new LeafTile(4, 3, 0, 0);
-		
-		LeafTile a = new LeafTile(2,1,4,4);
-		LeafTile b = new LeafTile(2,2,4,4);
-		LeafTile c = new LeafTile(2,3,4,4);
-		LeafTile d = new LeafTile(2,4,4,4);
-		InternalTile SE = new InternalTile(a, b, d, c);
-		SE.setLocation(4);
-		SE.setDepth(4);
-				
-		InternalTile root = new InternalTile(NE, NW, SE, SW);
-		root.setDepth(8);
-		root.setLocation(1);
-		
-		assertTrue(SE.swap("su", root) == null);
-		
-	}
-	
-	@Test
-	public void testIsLeaf() {
-		LeafTile ne = new LeafTile(8, 1, 0, 0);
-		LeafTile nw = new LeafTile(8, 2, 0, 0);
-		LeafTile se = new LeafTile(8, 3, 0, 0);
-		LeafTile sw = new LeafTile(8, 4, 0, 0);
-		InternalTile i = new InternalTile(ne, nw, se, sw);
-		
-		assertTrue(ne.isLeaf());
-		assertFalse(i.isLeaf());
-	}
-	
 }
