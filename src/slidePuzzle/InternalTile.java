@@ -69,16 +69,16 @@ public class InternalTile implements Tile {
 	@Override
 	public LeafTile merge(InternalTile parent, InternalTile grandparent) {
 		// Turn current node into a leaf node
-		LeafTile retTile = new LeafTile(this.depth, this.location, 0, 0);
+		LeafTile retTile = new LeafTile(this.depth, this.location, ((LeafTile) this.getNW()).getStartRow(), ((LeafTile) this.getNW()).getStartCol());
 
 		// Set grandparent's child equal to the new leaf node
 		if (this.location == 1) {
 			grandparent.setNE(retTile);
 		} else if (this.location == 2) {
 			grandparent.setNW(retTile);
-		} else if (this.location == 2) {
+		} else if (this.location == 3) {
 			grandparent.setSW(retTile);
-		} else {
+		} else if (this.location == 4) {
 			grandparent.setSE(retTile);
 		}
 
@@ -86,159 +86,32 @@ public class InternalTile implements Tile {
 	}
 
 	@Override
-	public Tile rotate() {
-		// Shift every child over by 2
-		Tile NE = this.getNE();
-		Tile NW = this.getNW();
-		Tile SW = this.getSW();
-		Tile SE = this.getSE();
-
-		this.setNE(SW);
-		this.setNW(SE);
-		this.setSW(NE);
-		this.setSE(NW);
+	public Tile rotate(InternalTile parent, int location) {
 		
-		//TODO inserted by naomi [Apr 28, 2019, 12:39:45 PM]
-		// Update leaf tile coordinates
-
-		// Update leaf tile locations
-		if (this.getNE().isLeaf()) {
-			((LeafTile) this.getNE()).setLocation(1);
-		} else {
-			((InternalTile) this.getNE()).setLocation(1);
+		if (location == 1) {
+			return this.getSW();
 		}
-
-		if (this.getNW().isLeaf()) {
-			((LeafTile) this.getNW()).setLocation(2);
-		} else {
-			((InternalTile) this.getNW()).setLocation(2);
+		else if (location == 2) {
+			return this.getSE();
 		}
-
-		if (this.getSW().isLeaf()) {
-			((LeafTile) this.getSW()).setLocation(3);
-		} else {
-			((InternalTile) this.getSW()).setLocation(3);
+		else if (location == 3) {
+			return this.getNE();
 		}
-
-		if (this.getSE().isLeaf()) {
-			((LeafTile) this.getSE()).setLocation(4);
-		} else {
-			((InternalTile) this.getSE()).setLocation(4);
+		else {
+			return this.getNW();
 		}
-
-		// Returns this tile
-		return null;
+		
 	}
 
 	@Override
-	public InternalTile split() {
+	public InternalTile split(InternalTile i) {
 		// Impossible for internal tile
 		return this;
 	}
 
 	@Override
-	public void swap(String s, int currentLocation) {
-		// If the two nodes are children of this node, SWAP NORMALLY
-		// Swap up or down
-		if ((s.equals("su") && (currentLocation == 3 || currentLocation == 4))
-				|| (s.equals("sd") && (currentLocation == 1 || currentLocation == 2))) {
-			if (currentLocation == 3 || currentLocation == 2) {
-				Tile NW = this.getNW();
-				Tile SW = this.getSW();
-				this.setNW(SW);
-				this.setSW(NW);
-
-				// Update locations
-				if (this.getNW().isLeaf()) {
-					((LeafTile) this.getNW()).setLocation(2);
-				} else {
-					((InternalTile) this.getNW()).setLocation(2);
-				}
-
-				if (this.getSW().isLeaf()) {
-					((LeafTile) this.getSW()).setLocation(3);
-				} else {
-					((InternalTile) this.getSW()).setLocation(3);
-				}
-				
-				//TODO inserted by naomi [Apr 28, 2019, 12:43:17 PM]
-				// Update leaf coordinates
-
-			} else {
-				Tile NE = this.getNE();
-				Tile SE = this.getSE();
-				this.setNE(SE);
-				this.setSE(NE);
-
-				// Update locations
-				if (this.getNE().isLeaf()) {
-					((LeafTile) this.getNE()).setLocation(1);
-				} else {
-					((InternalTile) this.getNE()).setLocation(1);
-				}
-
-				if (this.getSE().isLeaf()) {
-					((LeafTile) this.getSE()).setLocation(4);
-				} else {
-					((InternalTile) this.getSE()).setLocation(4);
-				}
-				
-				//TODO inserted by naomi [Apr 28, 2019, 12:43:17 PM]
-				// Update leaf coordinates
-			}
-		}
-		// Swap right or left
-		else if ((s.equals("sr") && (currentLocation == 2 || currentLocation == 3))
-				|| (s.equals("sl") && (currentLocation == 1 || currentLocation == 4))) {
-			if (currentLocation == 2 || currentLocation == 1) {
-				Tile NW = this.getNW();
-				Tile NE = this.getNE();
-				this.setNW(NE);
-				this.setNE(NW);
-
-				// Update locations
-				if (this.getNW().isLeaf()) {
-					((LeafTile) this.getNW()).setLocation(2);
-				} else {
-					((InternalTile) this.getNW()).setLocation(2);
-				}
-
-				if (this.getNE().isLeaf()) {
-					((LeafTile) this.getNE()).setLocation(1);
-				} else {
-					((InternalTile) this.getNE()).setLocation(1);
-				}
-				
-				//TODO inserted by naomi [Apr 28, 2019, 12:43:17 PM]
-				// Update leaf coordinates
-			} else {
-				Tile SW = this.getSW();
-				Tile SE = this.getSE();
-				this.setSW(SE);
-				this.setSE(SW);
-
-				// Update locations
-				if (this.getSW().isLeaf()) {
-					((LeafTile) this.getSW()).setLocation(3);
-				} else {
-					((InternalTile) this.getSW()).setLocation(3);
-				}
-
-				if (this.getSE().isLeaf()) {
-					((LeafTile) this.getSE()).setLocation(4);
-				} else {
-					((InternalTile) this.getSE()).setLocation(4);
-				}
-				
-				//TODO inserted by naomi [Apr 28, 2019, 12:43:17 PM]
-				// Update leaf coordinates
-
-			}
-		}
-		
-		else {
-			System.out.println("Swap is too complicated :/ Try again!");
-		}
+	public LeafTile swap(String s, Tile root) {
+		return null;
 	}
 
 	@Override
@@ -247,4 +120,3 @@ public class InternalTile implements Tile {
 		return false;
 	}
 }
-
