@@ -166,11 +166,11 @@ public class LeafTileTest {
 		LeafTile b = new LeafTile(2,2,4,4);
 		LeafTile c = new LeafTile(2,3,4,4);
 		LeafTile d = new LeafTile(2,4,4,4);
-		InternalTile SE = new InternalTile(a, b, d, c);
+		InternalTile SE = new InternalTile(a, b, c, d);
 		SE.setLocation(4);
 		SE.setDepth(4);
 				
-		InternalTile root = new InternalTile(NE, NW, SE, SW);
+		InternalTile root = new InternalTile(NE, NW, SW, SE);
 		root.setDepth(8);
 		root.setLocation(1);
 
