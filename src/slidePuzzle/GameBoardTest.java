@@ -51,7 +51,7 @@ public class GameBoardTest {
 	}
 	
 	@Test
-	void testUpdateDisplay() {
+	public void testUpdateDisplay() {
 		GameBoard gboard = new GameBoard(16, 1);
 		gboard.populateDis();
 		LeafTile tr = new LeafTile(8, 1, 1, 0);
