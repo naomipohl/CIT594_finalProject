@@ -23,7 +23,7 @@ public interface Tile {
 	/**
 	 * Rotates four sibling tiles 180 degrees. 
 	 * Test for rotate will verify tile's location/coordinates.
-	 * @return the tile on which rotate is called in new rotated position
+	 * @return tile in its new rotated position
 	 */
 	public Tile rotate(InternalTile parent, int location);
 
@@ -34,7 +34,7 @@ public interface Tile {
 	 * be performed if current depth <= minDepth. Error checking 
 	 * will be done in main method. 
 	 * 
-	 * @return Parent of new four leaves
+	 * @return Parent of new four leaf tiles
 	 */
 	public InternalTile split(InternalTile parent);
 	
@@ -46,6 +46,7 @@ public interface Tile {
 	 * @param s String input by user. "sr" moves the tile to the right. 
 	 * "sl" moves the tile to the left. "su" moves the tile up. "sd" moves the 
 	 * tile down.
+	 * @return leafTile in its swapped position
 	 */
 	public LeafTile swap(String s, Tile root);
 
