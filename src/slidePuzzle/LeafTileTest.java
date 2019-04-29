@@ -199,7 +199,7 @@ public class LeafTileTest {
 	}
 
 	@Test
-	public void swap() {
+	public void swapLeftRight() {
 		LeafTile NE = new LeafTile(4, 1, 0, 0);
 		LeafTile NW = new LeafTile(4, 2, 0, 0);
 		LeafTile SW = new LeafTile(4, 3, 0, 0);
@@ -215,8 +215,68 @@ public class LeafTileTest {
 		InternalTile root = new InternalTile(NE, NW, SE, SW);
 		root.setDepth(8);
 		root.setLocation(1);
+		
+		assertEquals(a.swap("sl", root), b);
+		assertEquals(c.swap("sr", root), d);
+	}
 
+	@Test
+	public void swapUpDown() {
+		LeafTile NE = new LeafTile(4, 1, 0, 0);
+		LeafTile NW = new LeafTile(4, 2, 0, 0);
+		LeafTile SW = new LeafTile(4, 3, 0, 0);
+		
+		LeafTile a = new LeafTile(2,1,4,4);
+		LeafTile b = new LeafTile(2,2,4,4);
+		LeafTile c = new LeafTile(2,3,4,4);
+		LeafTile d = new LeafTile(2,4,4,4);
+		InternalTile SE = new InternalTile(a, b, d, c);
+		SE.setLocation(4);
+		SE.setDepth(4);
+				
+		InternalTile root = new InternalTile(NE, NW, SE, SW);
+		root.setDepth(8);
+		root.setLocation(1);
+		
+		assertEquals(a.swap("sd", root), d);
+		assertEquals(c.swap("su", root), b);
+	}
 	
+	@Test
+	public void swapDifferentParents() {
+		
+		LeafTile a4 = new LeafTile(2,1,4,4);
+		LeafTile b4 = new LeafTile(2,2,4,4);
+		LeafTile c4 = new LeafTile(2,3,4,4);
+		LeafTile d4 = new LeafTile(2,4,4,4);
+		InternalTile SE = new InternalTile(a4, b4, d4, c4);
+		
+		LeafTile a3 = new LeafTile(2, 1, 4, 0);
+		LeafTile b3 = new LeafTile(2, 2, 4, 0);
+		LeafTile c3 = new LeafTile(2, 3, 4, 0);
+		LeafTile d3 = new LeafTile(2, 4, 4, 0);
+		InternalTile SW = new InternalTile(a3, b3, d3, c3);
+		
+		LeafTile a1 = new LeafTile(2, 1, 0, 4);
+		LeafTile b1 = new LeafTile(2, 2, 0, 4);
+		LeafTile c1 = new LeafTile(2, 3, 0, 4);
+		LeafTile d1 = new LeafTile(2, 4, 0, 4);
+		InternalTile NE = new InternalTile(a1, b1, d1, c1);
+		
+		LeafTile a2 = new LeafTile(2, 1, 0, 0);
+		LeafTile b2 = new LeafTile(2, 2, 0, 0);
+		LeafTile c2 = new LeafTile(2, 3, 0, 0);
+		LeafTile d2 = new LeafTile(2, 4, 0, 0);
+		InternalTile NW = new InternalTile(a2, b2, d2, c2);
+		
+		InternalTile root = new InternalTile(NE, NW, SE, SW);
+		root.setDepth(8);
+		root.setLocation(1);
+
+		assertEquals(a4.swap("su", root), d1);
+		assertEquals(c1.swap("sd", root), b4);
+		assertEquals(d3.swap("sr", root), c4);
+		assertEquals(b1.swap("sl", root), a2);
 	}
 		
 }
