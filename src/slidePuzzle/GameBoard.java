@@ -19,6 +19,9 @@ public class GameBoard implements Game {
 		this.dis = new String[maxDepth + 1][maxDepth];
 	}
 
+	public String[][] getDis() {
+		return dis;
+	}
 	@Override
 	public Tile createTree() {
 
