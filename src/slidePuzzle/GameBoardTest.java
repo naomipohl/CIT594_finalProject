@@ -64,7 +64,7 @@ public class GameBoardTest {
 	}
 	
 	@Test
-	public void testUpdateDisplay() {
+	void testUpdateDisplay() {
 		GameBoard gboard = new GameBoard(16, 1);
 		gboard.populateDis();
 		LeafTile tr = new LeafTile(8, 1, 1, 0);
@@ -109,7 +109,7 @@ public class GameBoardTest {
 		gboard.updateDisplay(tr142);
 		gboard.updateDisplay(tr143);
 		gboard.updateDisplay(tr144);
-		gboard.printBoard();
+		gboard.disToString();
 		assertEquals(gboard.dis[0][0], "___");
 		assertEquals(gboard.dis[1][7], "  |");
 		assertEquals(gboard.dis[1][8], "|  ");
@@ -119,7 +119,9 @@ public class GameBoardTest {
 		assertEquals(gboard.dis[9][7], "  |");
 		assertEquals(gboard.dis[8][5], "___");
 		assertEquals(gboard.dis[4][4], "   ");
-		assertEquals(gboard.dis[16][0], "|__");	
+		assertEquals(gboard.dis[16][0], "|__");
+		
+		
 	}
 	
 	@Test 
