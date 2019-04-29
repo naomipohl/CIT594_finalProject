@@ -26,10 +26,10 @@ public class GameBoard implements Game {
 	public Tile createTree() {
 
 		// initialize an internal tile of size 16 w/ four children size 8
-		LeafTile ne8 = new LeafTile(8, 1, 0, 0);
-		LeafTile nw8 = new LeafTile(8, 2, 0, 0);
-		LeafTile sw8 = new LeafTile(8, 3, 0, 0);
-		LeafTile se8 = new LeafTile(8, 4, 0, 0);
+		LeafTile ne8 = new LeafTile(8, 1, 1, 0);
+		LeafTile nw8 = new LeafTile(8, 2, 1, 0);
+		LeafTile sw8 = new LeafTile(8, 3, 1, 0);
+		LeafTile se8 = new LeafTile(8, 4, 1, 0);
 
 		InternalTile internal16 = new InternalTile(ne8, nw8, sw8, se8);
 		internal16.setDepth(16);
@@ -91,7 +91,7 @@ public class GameBoard implements Game {
 	/// this will take in a leaf Tile and get is depth and starting points from
 	/// there
 	public void updateDisplay(LeafTile leaf) {
-		int startRow = leaf.getStartRow() + 1;
+		int startRow = leaf.getStartRow();
 		int startCol = leaf.getStartCol();
 		int endRow = startRow + leaf.getDepth();
 		int endCol = startCol + leaf.getDepth();
