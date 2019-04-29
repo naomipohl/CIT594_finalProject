@@ -4,16 +4,16 @@ public class InternalTile implements Tile {
 
 	private Tile NE;
 	private Tile NW;
-	private Tile SE;
 	private Tile SW;
+	private Tile SE;
 	private int depth;
 	private int location;
 
-	public InternalTile(Tile NE, Tile NW, Tile SE, Tile SW) {
+	public InternalTile(Tile NE, Tile NW, Tile SW, Tile SE) {
 		this.setNE(NE);
 		this.setNW(NW);
-		this.setSE(SE);
 		this.setSW(SW);
+		this.setSE(SE);
 	}
 
 	/* Getters & Setters */
@@ -67,9 +67,47 @@ public class InternalTile implements Tile {
 
 	/* Interface methods */
 	@Override
-	public LeafTile merge(InternalTile parent, InternalTile grandparent) {
+	public LeafTile merge(InternalTile parent, InternalTile grandparent, LeafTile l) {
+		int parentSR = 0;
+		int parentSC = 0;
+		if (l.getLocation() == 1) {
+			parentSR = l.getStartRow();
+			parentSC = l.getStartCol() - l.getDepth();
+		}
+		else if (l.getLocation() == 2) {
+			parentSR = l.getStartRow();
+			parentSC = l.getStartCol();
+		}
+		else if (l.getLocation() == 3) {
+			parentSR = l.getStartRow() - l.getDepth();
+			parentSC = l.getStartCol();
+		}
+		else {
+			parentSR = l.getStartRow() - l.getDepth();
+			parentSC = l.getStartCol() - l.getDepth();
+		}
+		
+		int startRow = 0;
+		int startCol = 0;
+		if (parent.getLocation() == 1) {
+			startRow = parentSR;
+			startCol = parentSC - parent.getDepth();
+		}
+		else if (parent.getLocation() == 2) {
+			startRow = parentSR;
+			startCol = parentSC;
+		}
+		else if (parent.getLocation() == 3) {
+			startRow = parentSR - parent.getDepth();
+			startCol = parentSC;
+		}
+		else {
+			startRow = parentSR - parent.getDepth();
+			startCol = parentSC - parent.getDepth();
+		}
+		
 		// Turn current node into a leaf node
-		LeafTile retTile = new LeafTile(this.depth, this.location, ((LeafTile) this.getNW()).getStartRow(), ((LeafTile) this.getNW()).getStartCol());
+		LeafTile retTile = new LeafTile(this.depth, this.location, startRow, startCol);
 
 		// Set grandparent's child equal to the new leaf node
 		if (this.location == 1) {
