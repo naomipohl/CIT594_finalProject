@@ -10,9 +10,7 @@ public class PlayGame {
 
 		// Populate the board
 		g.populateDis();
-		
-		g.populateBoard(g.root);
-		
+
 		// Place the dog and the walker
 		g.placeDog((InternalTile) g.root);
 		g.placeWalker((InternalTile) g.root);
@@ -21,7 +19,8 @@ public class PlayGame {
 		Scanner sc = new Scanner(System.in);
 
 		// Print welcome message
-		System.out.println("Welcome to the sliding tile game!\n" + "You are currently in the location marked with a 'W',\n"
+		System.out.println(
+				"Welcome to the sliding tile game!\n" + "You are currently in the location marked with a 'W',\n"
 						+ "and your objective is to get to the dog tile, which is"
 						+ "marked with a 'D'. You can perform the following operations:\n"
 						+ "Merge ('merge'), Split('split'), Swap ('su', 'sd', 'sl', or 'sr'),"
@@ -31,7 +30,7 @@ public class PlayGame {
 		// Print the initial display
 		g.traverseTree(g.root);
 		g.printBoard();
-		
+
 		// User plays game
 		String userInput = null;
 
@@ -49,22 +48,41 @@ public class PlayGame {
 			// Merge
 			if (userInput.equals("merge")) {
 				// If trying to merge max size tiles, throw error
-				if (g.walker.getDepth() == g.maxDepth) {
-					System.out.println("Tiles too large- cannot perform merge");
+				if (g.walker.getDepth() == g.maxDepth / 2) {
+					// Find current tile's parent & grandparent
+					InternalTile parent = g.findParent(g.walker, g.root);
+
+					// Check that we are merging leaf tiles only
+					if (!parent.getNE().isLeaf() || !parent.getNW().isLeaf() || !parent.getSW().isLeaf()
+							|| !parent.getSE().isLeaf()) {
+						System.out.println("All tiles being merged must be of same size");
+					} else {
+						sc.close();
+						System.out.println("You won!");
+						break;
+					}
 				} else {
 					// Find current tile's parent & grandparent
 					InternalTile parent = g.findParent(g.walker, g.root);
-					InternalTile grandparent = g.findParent(parent, g.root);
 
-					// Perform the merge on the leaf tile
-					LeafTile m = g.walker.merge(parent, grandparent);
-					
-					g.walker = m;
+					// Check that we are merging leaf tiles only
+					if (!parent.getNE().isLeaf() || !parent.getNW().isLeaf() || !parent.getSW().isLeaf()
+							|| !parent.getSE().isLeaf()) {
+						System.out.println("All tiles being merged must be of same size");
+					} else {
+						InternalTile grandparent = g.findParent(parent, g.root);
 
-					// Update the display
-					g.traverseTree(g.root);
-					g.printBoard();
-					g.wipeDisplay();
+						// Perform the merge on the leaf tile
+						LeafTile m = g.walker.merge(parent, grandparent, g.walker);
+						System.out.println(m);
+
+						g.walker = m;
+
+						// Update the display
+						g.traverseTree(g.root);
+						g.printBoard();
+						g.wipeDisplay();
+					}
 				}
 			}
 			// Rotate
@@ -75,7 +93,11 @@ public class PlayGame {
 				// Perform the rotation
 				Tile l = g.walker.rotate(parent, g.walker.getLocation());
 
-				g.walker = (LeafTile) l;
+				if (l.isLeaf()) {
+					g.walker = (LeafTile) l;
+				} else {
+					g.walker = (LeafTile) ((InternalTile) l).getNW();
+				}
 
 				// Update the display
 				g.traverseTree(g.root);
@@ -99,20 +121,19 @@ public class PlayGame {
 					if (g.walker.getLocation() == 1) {
 						g.walker = (LeafTile) ((InternalTile) t.getNE()).getNW();
 					}
-					
+
 					else if (g.walker.getLocation() == 2) {
 						g.walker = (LeafTile) ((InternalTile) t.getNW()).getNW();
 					}
-					
+
 					else if (g.walker.getLocation() == 3) {
 						g.walker = (LeafTile) ((InternalTile) t.getSW()).getNW();
 					}
-					
+
 					else {
 						g.walker = (LeafTile) ((InternalTile) t.getSE()).getNW();
 					}
-					
-					
+
 					// Update the display
 					g.traverseTree(g.root);
 					g.printBoard();
@@ -172,7 +193,6 @@ public class PlayGame {
 			else if (userInput.equals("sr") && g.walker.getStartCol() + g.walker.getDepth() <= g.maxDepth - 1) {
 				// Find current tile's neighbor
 				LeafTile l = g.walker.swap("sr", g.root);
-				System.out.println("new leaf: " + l);
 				if (l.getDepth() == g.walker.getDepth()) {
 					g.walker = l;
 
