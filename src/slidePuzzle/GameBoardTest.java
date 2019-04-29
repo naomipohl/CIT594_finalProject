@@ -3,17 +3,30 @@ package slidePuzzle;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-
+ 
 public class GameBoardTest {
 	
-//	static GameBoard myGB;
-//	static LeafTile hardCodeRoot;
+	static GameBoard myGB;
+	static LeafTile hardCodeRoot;
 	
-//	@Before
-//	public void beforeEachTestMethod() {
-//		myGB = new GameBoard(16,1);
-//		hardCodeRoot = new LeafTile(16,2,0,0); //inputs are parent location = 0,0 and position = 2 (top left)
-//	}
+	@Before
+	public void beforeEachTestMethod() {
+		myGB = new GameBoard(16,1);
+		hardCodeRoot = new LeafTile(16,2,0,0); //inputs are parent location = 0,0 and position = 2 (top left)
+	}
+	
+	/*
+	 * Several methods in GameBoard.java are the result of calculations 
+	 * with random numbers. These methods have been tested with the Eclipse
+	 * debugger and they include:
+	 * - GameBoard()
+	 * - createTree()
+	 * - placeDog()
+	 * - placeWalker()
+	 */
+	
+	
+	
 	
 	@Test
 	public void testFindParent() {
@@ -96,7 +109,7 @@ public class GameBoardTest {
 		gboard.updateDisplay(tr142);
 		gboard.updateDisplay(tr143);
 		gboard.updateDisplay(tr144);
-		gboard.disToString();
+		gboard.printBoard();
 		assertEquals(gboard.dis[0][0], "___");
 		assertEquals(gboard.dis[1][7], "  |");
 		assertEquals(gboard.dis[1][8], "|  ");
@@ -110,7 +123,7 @@ public class GameBoardTest {
 	}
 	
 
-/*	@Test
+	@Test
 	public void testPopulateBoard() {
 		//have already initialized 16x16 board without splits
 		myGB.populateBoard(hardCodeRoot);
@@ -121,13 +134,6 @@ public class GameBoardTest {
 				assertEquals(myGB.ordToPrint[i][j],16);
 			}
 		}
-		
-		
-		
-		
-		
-		
-		
 		
 		 // Now let's split into four tiles of width 8:
 		 
@@ -147,12 +153,6 @@ public class GameBoardTest {
 				assertEquals(myGB.ordToPrint[i][j],8);
 			}
 		}
-		
-		
-		
-		
-		
-		
 		
 		//Now let's split SE corner into four tiles of width 4:
 		
@@ -186,11 +186,6 @@ public class GameBoardTest {
 			}
 		}
 		
-		
-		
-		
-		
-		
 		//Now let's split NE corner of SE tile into four tiles of width 2:
 		
 		LeafTile Leaf2_1 = new LeafTile(2,1,0,0);
@@ -210,8 +205,7 @@ public class GameBoardTest {
 				assertEquals(myGB.ordToPrint[i][j],2);
 			}
 		}
-		
-		
+				
 		
 		//Finally, split SW corner of NE corner of bottom right tile into four tiles of width 1:
 		
@@ -233,6 +227,6 @@ public class GameBoardTest {
 		assertEquals(myGB.ordToPrint[10][13],1);
 		assertEquals(myGB.ordToPrint[11][13],1);
 	}
-*/
+
 
 }
