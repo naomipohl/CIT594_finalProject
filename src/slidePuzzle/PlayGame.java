@@ -10,19 +10,30 @@ public class PlayGame {
 
 		// Populate the board
 		g.populateDis();
+		
+		g.populateBoard(g.root);
+		g.printIntArray(g.ordToPrint);
+		
+		// Place the dog and the walker
+		g.placeDog((InternalTile) g.root);
+		g.placeWalker((InternalTile) g.root);
 
 		// Initialize scanner
 		Scanner sc = new Scanner(System.in);
 
 		// Print welcome message
 		System.out
-				.println("Welcome to the sliding tile game!\n" + "You are currently in the location marked with a 'W', "
-						+ "and your objective is to get to the dog tile, which is "
-						+ "marked with a 'D'. You can perform the following operations: "
-						+ "Merge ('merge'), Split('split'), Swap ('su', 'sd', 'sl', or 'sr'), "
-						+ "and Rotate ('rotate'). You can quit at any point by typing 'quit'. "
+				.println("Welcome to the sliding tile game!\n" + "You are currently in the location marked with a 'W',\n"
+						+ "and your objective is to get to the dog tile, which is"
+						+ "marked with a 'D'. You can perform the following operations:\n"
+						+ "Merge ('merge'), Split('split'), Swap ('su', 'sd', 'sl', or 'sr'),"
+						+ "and Rotate ('rotate'). \nYou can quit at any point by typing 'quit'.\n"
 						+ "Let's get started- catch that dog!");
 
+		// Print the initial display
+		g.traverseTree(g.root);
+		g.printBoard();
+		
 		// User plays game
 		String userInput = null;
 
@@ -48,12 +59,15 @@ public class PlayGame {
 					InternalTile grandparent = g.findParent(parent, g.root);
 
 					// Perform the merge on the leaf tile
-					LeafTile l = g.walker.merge(parent, grandparent);
+					LeafTile m = g.walker.merge(parent, grandparent);
+					
+					g.walker = m;
 
 					// Update the display
 					g.traverseTree(g.root);
 					g.printBoard();
 					g.wipeDisplay();
+					g.printIntArray(g.ordToPrint);
 				}
 			}
 			// Rotate
@@ -70,6 +84,7 @@ public class PlayGame {
 				g.traverseTree(g.root);
 				g.printBoard();
 				g.wipeDisplay();
+				g.printIntArray(g.ordToPrint);
 			}
 			// Split
 			else if (userInput.equals("split")) {
@@ -79,12 +94,14 @@ public class PlayGame {
 				} else {
 					InternalTile parent = g.findParent(g.walker, g.root);
 					// Split the current tile
-					g.walker.split(parent);
+					InternalTile t = g.walker.split(parent);
 
+					g.walker = (LeafTile) t.getNW();
 					// Update the display
 					g.traverseTree(g.root);
 					g.printBoard();
 					g.wipeDisplay();
+					g.printIntArray(g.ordToPrint);
 				}
 			}
 			// Swap UP
@@ -99,6 +116,7 @@ public class PlayGame {
 					g.traverseTree(g.root);
 					g.printBoard();
 					g.wipeDisplay();
+					g.printIntArray(g.ordToPrint);
 				} else {
 					System.out.println("Must swap tiles of same width");
 				}
@@ -116,6 +134,7 @@ public class PlayGame {
 					g.traverseTree(g.root);
 					g.printBoard();
 					g.wipeDisplay();
+					g.printIntArray(g.ordToPrint);
 				} else {
 					System.out.println("Must swap tiles of same width");
 				}
@@ -132,6 +151,7 @@ public class PlayGame {
 					g.traverseTree(g.root);
 					g.printBoard();
 					g.wipeDisplay();
+					g.printIntArray(g.ordToPrint);
 				} else {
 					System.out.println("Must swap tiles of same width");
 				}
@@ -140,7 +160,7 @@ public class PlayGame {
 			else if (userInput.equals("sr") && g.walker.getStartCol() + g.walker.getDepth() <= g.maxDepth - 1) {
 				// Find current tile's neighbor
 				LeafTile l = g.walker.swap("sr", g.root);
-
+				System.out.println("new leaf: " + l);
 				if (l.getDepth() == g.walker.getDepth()) {
 					g.walker = l;
 
@@ -148,6 +168,7 @@ public class PlayGame {
 					g.traverseTree(g.root);
 					g.printBoard();
 					g.wipeDisplay();
+					g.printIntArray(g.ordToPrint);
 				} else {
 					System.out.println("Must swap tiles of same width");
 				}
@@ -168,5 +189,3 @@ public class PlayGame {
 	}
 
 }
-
-
