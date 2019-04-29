@@ -7,26 +7,28 @@ package slidePuzzle;
  */
 public interface Tile {
 	
-	
 	/**
-	 * Merges four sibling tiles into a single tile. If merge() is called on 
+     * Merges four sibling tiles into a single tile. If merge() is called on 
 	 * an internal tile, a leaf tile of the same depth and location is 
 	 * returned. If merge() is called on a leaf tile, the parent
 	 * internal tile of the four sibling tiles becomes a leaf tile and that
 	 * leaf tile is returned. 
 	 * Merge will not be performed if current depth >= maxDepth. This 
-	 * error checking is done in main method.
+	 * @param parent
+	 * @param grandparent
+	 * @param l
 	 * @return new leaf tile created by merging
 	 */
-	public LeafTile merge(InternalTile parent, InternalTile grandparent);
+	public LeafTile merge(InternalTile parent, InternalTile grandparent, LeafTile l);
 	
 	/**
-	 * Rotates four sibling tiles 180 degrees. 
-	 * Test for rotate will verify tile's location/coordinates.
-	 * @return tile in its new rotated position
+	 * Rotates four sibling tiles 180 degrees.
+	 * @param parent
+	 * @param location
+	 * @return the tile on which rotate is called in new rotated position
 	 */
 	public Tile rotate(InternalTile parent, int location);
-
+	
 	/**
 	 * Split divides tile into four leaf tiles. If an internal tile is split, 
 	 * that internal tile is returned. If a leaf tile is split, the internal
@@ -34,18 +36,18 @@ public interface Tile {
 	 * be performed if current depth <= minDepth. Error checking 
 	 * will be done in main method. 
 	 * 
-	 * @return Parent of new four leaf tiles
+	 * @param parent
+	 * @return Parent of new four leaves
 	 */
 	public InternalTile split(InternalTile parent);
 	
 	/**
 	 * Swap exchanges the location of the tile with an adjacent tile. The two 
 	 * tiles may or may not have a common parent, however they must be 
-	 * adjacent spatially and must have the same depth. Test will verify that 
-	 * the tile in its swapped condition has correct location and parent.
-	 * @param s String input by user. "sr" moves the tile to the right. 
-	 * "sl" moves the tile to the left. "su" moves the tile up. "sd" moves the 
-	 * tile down.
+	 * adjacent spatially and must have the same depth.
+	 * 
+	 * @param s
+	 * @param root
 	 * @return leafTile in its swapped position
 	 */
 	public LeafTile swap(String s, Tile root);
