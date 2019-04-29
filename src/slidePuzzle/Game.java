@@ -1,10 +1,5 @@
 package slidePuzzle;
-/**
- * Represents game board in sliding tile game. Contains
- * methods to setup game and print board to user.
- * @author Hindes, Kelley, Pohl, Weiss
- *
- */
+
 public interface Game {
 	
 	/**
@@ -18,7 +13,7 @@ public interface Game {
 	 * based on tree traversal
 	 * @param t
 	 */
-//	public void populateBoard(Tile t);
+	public void populateBoard(Tile t);
 	
 	/**
 	 * Randomly places the dog in a
@@ -26,7 +21,7 @@ public interface Game {
 	 * @return the tile in which the dog
 	 * was placed
 	 */
-	public Tile placeDog();
+	public Tile placeDog(Tile root);
 	
 	/**
 	 * Randomly places the walker in a 
@@ -34,20 +29,14 @@ public interface Game {
 	 * @return the tile in which the walker
 	 * was placed
 	 */
-	public Tile placeWalker();
+	public Tile placeWalker(InternalTile root);
 	
 	/**
-	 * Updates a 2D array of strings that represent display
-	 * @param leaf
-	 */
-	public void updateDisplay(LeafTile leaf);
-	
-	/**
-	 * Traverses the 2D array display into a string representation
-	 * and prints the game board to console
+	 * Traverses the tree
+	 * and prints the game board
 	 * @param board
 	 */
-	public void printBoard(int[][] board);
+	public void printBoard();
 	
 	/**
 	 * Finds the parent tile of any tile
