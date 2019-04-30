@@ -278,5 +278,10 @@ public class LeafTileTest {
 		assertEquals(d3.swap("sr", root), c4);
 		assertEquals(b1.swap("sl", root), a2);
 	}
-		
+	@Test
+	public void testSetLocation() {
+		LeafTile leaf = new LeafTile(2, 1, 0, 0);
+		leaf.setLocation(2);
+		assertEquals(leaf.getLocation(), 2);
+	}	
 }
