@@ -1,9 +1,10 @@
 # 'Lost Dog' Sliding Quadtree Puzzle
 
 Lost Dog is an interactive game that simulates a dog walker trying to find a lost dog. 
-The dog walker searches in a two dimensional grid for the dog. The objective of the game is for the user 
-to move the dog walker from tile to tile around the grid until it is in the same tile as the dog.  
+The dog walker ('W' on the game board) searches in a two dimensional grid for the dog ('D' on the game board). The objective of the game is for the user to move the dog walker from tile to tile around the grid until it is in the same tile as the dog. 
 If the dog is found, the user wins the game.
+
+The game is implemented using a Point-Region QuadTree datastructure. The Composite design pattern was used (every Tile object can be either an InternalTile or LeafTile).
 
 This was a final project for CIT594 (Data Structures &amp; Software Design) at UPenn.
 
