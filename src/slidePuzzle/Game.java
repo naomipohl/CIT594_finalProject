@@ -1,61 +1,81 @@
 package slidePuzzle;
+
 /**
- * Tile represents a spatial unit on the sliding puzzle. Tiles
- * can be merged, rotated, split and swapped. 
+ * Game represents a sliding tile game. The object of the game is for a 
+ * user to help a dog walker get to the dog by performing operations
+ * on the sliding tiles. This class constructs the game board, places 
+ * the dog and dog walker on the board, and prints the board to the 
+ * console. The game board is constructed from a quadtree (referred to
+ * as a tile). This class holds the root tile and uses the root to find
+ * the parent of a tile in one of its methods. 
  * @author Hindes, Kelley, Pohl, Weiss
  *
  */
-public interface Tile {
+public interface Game {
 	
 	/**
-     * Merges four sibling tiles into a single tile. If merge() is called on 
-	 * an internal tile, a leaf tile of the same depth and location is 
-	 * returned. If merge() is called on a leaf tile, the parent
-	 * internal tile of the four sibling tiles becomes a leaf tile and that
-	 * leaf tile is returned. 
-	 * Merge will not be performed if current depth >= maxDepth. This 
-	 * @param parent of leaf tile on which method is called
-	 * @param grandparent of leaf tile on which method is called
-	 * @param l - leaf tile on which method is called 
-	 * @return new leaf tile created by merging
+	 * Creates a quadtree with Internal and Leaf Tiles based on values
+	 * for the maximum and minimum tile depth. The quadtree is created
+	 * with a randomized number of splits on the leaf tiles. 
+	 * @return root of quadtree
 	 */
-	public LeafTile merge(InternalTile parent, InternalTile grandparent, LeafTile l);
-	
-	/**
-	 * Rotates four sibling tiles 180 degrees.
-	 * @param parent of tile on which method is called
-	 * @param location of tile on which method is called
-	 * @return the tile on which rotate is called in new rotated position
-	 */
-	public Tile rotate(InternalTile parent, int location);
-	
-	/**
-	 * Split divides tile into four leaf tiles. If an internal tile is split, 
-	 * that internal tile is returned. If a leaf tile is split, the internal
-	 * tile that is parent of the new leaf tiles is returned. Split will not 
-	 * be performed if current depth less than or equal to minDepth. Error 
-	 * checking will be done in main method. 
-	 * 
-	 * @param parent of tile to split
-	 * @return Parent of new four leaves
-	 */
-	public InternalTile split(InternalTile parent);
-	
-	/**
-	 * Swap exchanges the location of the tile with an adjacent tile. The two 
-	 * tiles may or may not have a common parent, however they must be 
-	 * adjacent spatially and must have the same depth.
-	 * 
-	 * @param s String command for direction of swap
-	 * @param root - root of quadtree
-	 * @return leafTile in its swapped position
-	 */
-	public LeafTile swap(String s, Tile root);
+	public Tile createTree();
 
 	/**
-	 * Returns a boolean value based on data type
-	 * @return true if tile is a LeafTile and false if tile is an InternalTile
+	 * Randomly places the dog in a
+	 * tile
+	 * @param root of quadtree
+	 * @return the tile in which the dog
+	 * was placed
 	 */
-	public boolean isLeaf();
+	public Tile placeDog(Tile root);
+	
+	/**
+	 * Randomly places the walker in a 
+	 * tile
+	 * @param root of quadtree
+	 * @return the tile in which the walker
+	 * was placed
+	 */
+	public Tile placeWalker(InternalTile root);
+	
+	/**
+	 * Updates display based on depth and starting points of leaf
+	 * @param leaf
+	 */
+	public void updateDisplay(LeafTile leaf);
+	
+	/**
+	 * Helper method for console printing
+	 */
+	public void populateDis();	
+	
+	/**
+	 * Traverses the tree and prints the game board
+	 */
+	public void printBoard();
+	
+	
+	/**
+	 * Clears display on console.
+	 */
+	public void wipeDisplay();
+	
+	/**
+	 * Recursively calls updateDisplay on all children leaf tiles 
+	 * of the input param tile.
+	 * @param tile - the tile to be traversed
+	 */
+	public void traverseTree(Tile tile);
+	
+	
+	/**
+	 * Finds the parent tile of any tile
+	 * @param toFind the tile of which to find the parent 
+	 * @param startingTile either the root or some tile above toFind in 
+	 * quadtree hierarchy
+	 * @return InternalTile the parent
+	 */
+	public InternalTile findParent(Tile toFind, Tile startingTile);
 	
 }
